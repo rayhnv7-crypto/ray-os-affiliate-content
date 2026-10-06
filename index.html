@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="id" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Ray OS • Final Office OS</title>
+<script src="https://cdn.sheetjs.com/xlsx-0.20.3/package/dist/xlsx.full.min.js"></script>
+<style>
+:root{--paper:#f4f6f3;--card:#fff;--ink:#18282d;--mute:#65757a;--line:#dce4e0;--accent:#2f6fed;--affiliate:#2a9166;--value:#6b59c9;--brand:#b57800;--danger:#bd3a3a;--soft:#edf2ef;--shadow:0 8px 26px rgba(20,40,46,.06);box-sizing:border-box}
+:root[data-theme="dark"]{--paper:#11181b;--card:#1a2428;--ink:#eaf0ee;--mute:#9eafb4;--line:#2b393e;--accent:#77a0ff;--affiliate:#55cf98;--value:#a99cff;--brand:#f0bd61;--danger:#ff7272;--soft:#202b30;--shadow:0 8px 30px rgba(0,0,0,.18)}
+*{box-sizing:inherit}html{scroll-behavior:smooth}body{margin:0;background:var(--paper);color:var(--ink);font-family:Inter,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;line-height:1.45}main{max-width:1180px;margin:0 auto;padding:24px 16px 64px}
+h1,h2,h3{margin:0}h1{font-size:1.8rem;letter-spacing:-.03em}.sub{color:var(--mute);margin:6px 0 18px}.topbar{display:flex;justify-content:space-between;gap:12px;align-items:flex-start;margin-bottom:16px}.top-actions{display:flex;gap:8px;flex-wrap:wrap}.btn{font:inherit;font-weight:700;color:var(--ink);background:var(--card);border:1px solid var(--line);border-radius:9px;padding:9px 12px;cursor:pointer}.btn.primary{background:var(--ink);color:var(--paper);border-color:var(--ink)}.btn.x{color:var(--mute)}.btn.danger{border-color:color-mix(in srgb,var(--danger) 45%,var(--line));color:var(--danger)}.crud-actions{display:flex;gap:6px;flex-wrap:wrap}.btn.small{padding:5px 8px;font-size:.76rem}.btn.warn{color:#9a6500;border-color:#d7b76a}
+.tabs{display:flex;gap:8px;overflow:auto;padding-bottom:8px;margin-bottom:12px}.tab{white-space:nowrap}.tab.active{border-color:var(--ink);box-shadow:0 0 0 1px var(--ink)}
+.view{display:none}.view.active{display:block}.grid{display:grid;gap:12px}.g4{grid-template-columns:repeat(4,minmax(0,1fr))}.g3{grid-template-columns:repeat(3,minmax(0,1fr))}.g2{grid-template-columns:repeat(2,minmax(0,1fr))}.card{background:var(--card);border:1px solid var(--line);border-radius:13px;padding:15px;box-shadow:var(--shadow)}.kpi{display:flex;flex-direction:column;gap:4px}.kpi .n{font-size:1.35rem;font-weight:800}.kpi .l{font-size:.82rem;color:var(--mute)}.label{font-size:.78rem;color:var(--mute);font-weight:700}.value{font-size:1.05rem;font-weight:800}.pill{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--line);border-radius:999px;padding:5px 9px;font-size:.78rem;font-weight:700}.dot{width:9px;height:9px;border-radius:50%;display:inline-block;background:currentColor}.affiliate{color:var(--affiliate)}.valuec{color:var(--value)}.brand{color:var(--brand)}
+.progress{height:9px;background:var(--soft);border-radius:999px;overflow:hidden}.progress i{display:block;height:100%;background:var(--accent);border-radius:inherit;width:0}.mini{font-size:.82rem;color:var(--mute)}.section{margin:18px 0 0}.section h2{font-size:1.02rem;margin-bottom:8px}.section h3{font-size:.92rem;margin:14px 0 7px}
+.table-wrap{overflow:auto;border:1px solid var(--line);border-radius:11px}.table{width:100%;border-collapse:collapse;min-width:760px}.table th,.table td{padding:9px 10px;border-bottom:1px solid var(--line);text-align:left;font-size:.82rem;vertical-align:top}.table th{background:var(--soft);position:sticky;top:0;font-size:.76rem;color:var(--mute)}.table tr:last-child td{border-bottom:0}
+input,select,textarea{width:100%;font:inherit;color:var(--ink);background:var(--paper);border:1px solid var(--line);border-radius:8px;padding:9px 10px}textarea{min-height:82px;resize:vertical}.field{display:flex;flex-direction:column;gap:5px}.field>span{font-size:.78rem;color:var(--mute);font-weight:700}
+.week-grid{display:grid;grid-template-columns:repeat(7,minmax(120px,1fr));gap:8px}.day-card{background:var(--card);border:1px solid var(--line);border-radius:11px;padding:10px;min-height:180px}.day-card .head{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}.day-card .head b{font-size:.88rem}.day-card .meta{font-size:.74rem;color:var(--mute)}.slot{border:1px dashed var(--line);padding:7px;border-radius:8px;margin:6px 0;font-size:.76rem}.slot strong{display:block}.check{display:flex;gap:8px;align-items:flex-start;margin:7px 0;font-size:.8rem}.check input{width:auto;margin-top:2px}.muted-box{background:var(--soft);border-radius:9px;padding:10px;font-size:.82rem}
+.pipeline{display:grid;grid-template-columns:repeat(7,minmax(130px,1fr));gap:8px}.stage{background:var(--soft);border:1px solid var(--line);border-radius:11px;padding:10px;min-height:120px}.stage h3{font-size:.8rem}.item-row{display:flex;justify-content:space-between;gap:8px;align-items:center;border:1px solid var(--line);border-radius:9px;padding:9px;margin-top:7px;background:var(--card)}.item-row small{display:block;color:var(--mute)}
+.modal-back{position:fixed;inset:0;background:rgba(0,0,0,.38);display:none;align-items:center;justify-content:center;padding:14px;z-index:50}.modal-back.show{display:flex}.modal{max-width:640px;width:100%;max-height:88vh;overflow:auto;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px}.modal-head{display:flex;justify-content:space-between;gap:12px;align-items:center}.close{cursor:pointer;background:none;border:0;font-size:1.3rem;color:var(--mute)}
+.notice{padding:10px 12px;border-left:4px solid var(--accent);background:var(--soft);border-radius:6px;font-size:.84rem}.table input,.table select{min-width:90px;padding:6px 7px;font-size:.78rem}.danger-box{border-left-color:var(--danger)}
+@media(max-width:980px){.g4{grid-template-columns:repeat(2,minmax(0,1fr))}.week-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.pipeline{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:640px){main{padding:16px 12px 40px}.topbar{flex-direction:column}.g4,.g3,.g2{grid-template-columns:1fr}.week-grid,.pipeline{grid-template-columns:1fr}.day-card{min-height:auto}.tabs{position:sticky;top:0;background:var(--paper);padding-top:8px;z-index:20}}
+</style>
+</head>
+<body>
+<main>
+<div class="topbar">
+  <div><h1>Ray OS</h1><p class="sub">Konten, affiliate, kerja, kuliah, target, review, dan historis dalam satu dashboard.</p></div>
+  <div class="top-actions"><button class="btn" id="themeBtn">Dark mode</button><button class="btn" data-view="history">Excel / Historis</button><button class="btn" id="exportBtn">Export JSON</button><button class="btn" id="importBtn">Import JSON</button><button class="btn danger" id="trashBtn">Trash / Restore</button><input id="importFile" type="file" accept="application/json" hidden></div>
+</div>
+<div class="notice">CRUD FINAL: data penting punya <b>Tambah</b>, <b>Edit</b>, <b>Delete</b>, <b>Restore</b>, dan <b>Hapus Permanen</b> di Trash. Audit log tersedia. &nbsp; Target mingguan saat ini: <b>11 konten</b> = <b>6 Affiliate</b> + <b>3 Value</b> + <b>2 Personal Brand</b>. Affiliate diuji lewat <b>2 TikTok + 2 Shopee + 2 Tokopedia</b>. Ini target operasional, bukan hukuman mati kalau minggu lu lagi digilas kerja dan kuliah.</div>
+<div class="tabs" id="tabs"></div>
+
+<section class="view active" id="view-dashboard">
+  <div class="grid g4" id="kpis"></div>
+  <div class="grid g2 section">
+    <div class="card"><h2>Target mingguan</h2><div class="grid g3" id="pillarKpis"></div></div>
+    <div class="card"><h2>Funnel affiliate</h2><div class="grid g3" id="funnelKpis"></div></div>
+  </div>
+  <div class="card section"><h2>7 hari kerja + konten</h2><div class="week-grid" id="week"></div></div>
+  <div class="grid g2 section">
+    <div class="card"><h2>Review mingguan</h2><div id="reviewPreview"></div><button class="btn primary" data-nav="review">Buka weekly review</button></div>
+    <div class="card"><h2>Quick add</h2><div class="grid g2"><div class="field"><span>Ide baru</span><input id="quickIdea" placeholder="Tulis ide mentah..."></div><div class="field"><span>Judul affiliate</span><input id="quickAff" placeholder="Produk / angle..."></div></div><button class="btn primary" id="quickSave" style="margin-top:10px">Simpan ke Content Bank</button></div>
+  </div>
+</section>
+
+<section class="view" id="view-content">
+  <div class="grid g3">
+    <div class="card"><h2>Content Bank</h2><p class="mini">Tangkap ide dulu. Tidak semua ide harus langsung jadi video.</p><div class="grid g2"><div class="field"><span>Ide</span><input id="ideaInput"></div><div class="field"><span>Pilar</span><select id="ideaPilar"><option>Affiliate</option><option>Value</option><option>Personal Brand</option></select></div></div><div class="field" style="margin-top:8px"><span>Angle / catatan</span><textarea id="ideaNote"></textarea></div><button class="btn primary" id="addIdea" style="margin-top:8px">Tambah ide</button></div>
+    <div class="card"><h2>Script builder</h2><div class="field"><span>Judul</span><input id="scriptTitle"></div><div class="field"><span>Hook</span><textarea id="scriptHook"></textarea></div><div class="field"><span>Isi / proof</span><textarea id="scriptBody"></textarea></div><div class="field"><span>CTA</span><input id="scriptCta"></div><button class="btn primary" id="addScript" style="margin-top:8px">Simpan script</button></div>
+    <div class="card"><h2>Status produksi</h2><div id="contentStats"></div></div>
+  </div>
+  <div class="card section"><h2>Ide tersimpan</h2><div id="ideasTable"></div></div><div class="card section"><h2>Script tersimpan</h2><div id="scriptsList"></div></div>
+  <div class="card section"><h2>Pipeline konten</h2><div class="pipeline" id="pipeline"></div></div>
+</section>
+
+<section class="view" id="view-affiliate">
+  <div class="grid g4" id="affKpis"></div>
+  <div class="card section"><h2>6 slot affiliate minggu ini</h2><div class="table-wrap"><table class="table"><thead><tr><th>Slot</th><th>Platform</th><th>Produk</th><th>Link</th><th>Status</th><th>Views</th><th>Clicks</th><th>Orders</th><th>GMV</th><th>Komisi</th></tr></thead><tbody id="affRows"></tbody></table></div></div>
+  <div class="card section"><h2>Tracking affiliate</h2><button class="btn primary" id="addAff">Tambah baris affiliate</button></div>
+</section>
+
+<section class="view" id="view-work">
+  <div class="grid g3">
+    <div class="card"><h2>Absensi</h2><div class="top-actions" style="margin:8px 0"><button class="btn" id="prevDay">← Hari</button><button class="btn" id="nextDay">Hari →</button></div><div id="attendance"></div></div>
+    <div class="card"><h2>Tugas kerja</h2><div class="field"><span>Tugas baru</span><input id="workTask"></div><button class="btn primary" id="addWork" style="margin-top:8px">Tambah</button><div id="workList" style="margin-top:10px"></div></div>
+    <div class="card"><h2>Kuliah & workout</h2><div class="field"><span>Catatan kuliah hari ini</span><textarea id="studyNote"></textarea></div><div class="field"><span>Workout (menit)</span><input id="workoutMin" type="number" min="0"></div><div class="crud-actions" style="margin-top:8px"><button class="btn primary" id="saveDayLife">Simpan hari ini</button><button class="btn" id="editLife">Edit</button><button class="btn danger" id="deleteLife">Delete</button></div></div>
+  </div>
+  <div class="card section"><h2>Jangan bawa data kantor ke konten</h2><div class="notice danger-box">Dashboard ini boleh mencatat rutinitas kerja, tetapi jangan memasukkan data perusahaan, pelanggan, dokumen pajak, atau informasi internal yang tidak boleh dipublikasikan.</div></div>
+</section>
+
+<section class="view" id="view-analytics">
+  <div class="grid g4" id="analyticsKpis"></div>
+  <div class="grid g2 section"><div class="card"><h2>Konten</h2><div id="contentAnalytics"></div></div><div class="card"><h2>Affiliate</h2><div id="affAnalytics"></div></div></div>
+  <div class="card section"><h2>Log mingguan</h2><div id="weeklyLog"></div></div>
+</section>
+
+<section class="view" id="view-review">
+  <div class="grid g2">
+    <div class="card"><h2>Weekly Review</h2><div class="field"><span>Yang berhasil</span><textarea id="rvWin"></textarea></div><div class="field"><span>Yang gagal / macet</span><textarea id="rvLoss"></textarea></div><div class="field"><span>Kenapa</span><textarea id="rvWhy"></textarea></div><div class="field"><span>Yang diubah minggu depan</span><textarea id="rvChange"></textarea></div><div class="crud-actions" style="margin-top:8px"><button class="btn primary" id="saveReview">Simpan review</button><button class="btn" id="editCurrentReview">Edit review</button><button class="btn danger" id="deleteCurrentReview">Delete review</button></div></div>
+    <div class="card"><h2>Aturan review</h2><div class="muted-box">Jangan mengubah strategi karena satu video. Lihat pola beberapa konten. Untuk affiliate, baca funnel dari views → profile visit → link click → order → GMV → komisi.</div><div id="reviewNumbers" style="margin-top:10px"></div></div>
+  </div><div class="card section"><h2>Riwayat Weekly Review</h2><div id="reviewHistory"></div></div>
+</section>
+
+<section class="view" id="view-monthly">
+  <div class="card"><h2>Monthly Compounding</h2><p class="mini">Riwayat target, output, dan hasil. Fokus pada kemajuan bulan ke bulan.</p><div class="table-wrap"><table class="table"><thead><tr><th>Bulan</th><th>Target konten</th><th>Konten terbit</th><th>Affiliate</th><th>Value</th><th>Personal Brand</th><th>Views</th><th>Orders</th><th>GMV</th><th>Komisi</th></tr></thead><tbody id="monthlyRows"></tbody></table></div></div>
+</section>
+
+<section class="view" id="view-goals">
+  <div class="grid g3">
+    <div class="card"><h2>Tambah Goal</h2><div class="field"><span>Nama target</span><input id="goalTitle" placeholder="Contoh: 24 konten / minggu"></div><div class="grid g2" style="margin-top:8px"><div class="field"><span>Target angka</span><input id="goalTarget" type="number" min="0"></div><div class="field"><span>Progress saat ini</span><input id="goalCurrent" type="number" min="0"></div></div><div class="grid g2" style="margin-top:8px"><div class="field"><span>Satuan</span><input id="goalUnit" placeholder="konten, Rp, views"></div><div class="field"><span>Periode</span><select id="goalPeriod"><option>Mingguan</option><option>Bulanan</option><option>Kuartalan</option><option>Tahunan</option></select></div></div><button class="btn primary" id="addGoal" style="margin-top:8px">Tambah Goal</button></div>
+    <div class="card"><h2>Target Operasional</h2><p class="mini">Angka ini dipakai Dashboard dan bisa diubah tanpa menyentuh kode.</p><div class="grid g2"><div class="field"><span>Total konten / minggu</span><input id="setWeeklyTarget" type="number" min="0"></div><div class="field"><span>Affiliate / minggu</span><input id="setAffiliateTarget" type="number" min="0"></div><div class="field"><span>Value / minggu</span><input id="setValueTarget" type="number" min="0"></div><div class="field"><span>Personal Brand / minggu</span><input id="setBrandTarget" type="number" min="0"></div></div><div class="crud-actions" style="margin-top:8px"><button class="btn primary" id="saveSettings">Simpan target</button><button class="btn" id="resetSettings">Reset bawaan</button></div></div>
+    <div class="card"><h2>Aturan Data</h2><div class="muted-box">Data bisnis yang dihapus masuk Trash. Permanent delete hanya tersedia dari Trash setelah konfirmasi. Dashboard, Analytics, dan Monthly adalah hasil hitung, jadi tidak perlu Delete.</div></div>
+  </div>
+  <div class="card section"><h2>Daftar Goals</h2><div id="goalsList"></div></div>
+</section>
+<section class="view" id="view-settings">
+  <div class="grid g2"><div class="card"><h2>Backup & Data</h2><p class="mini">Backup JSON menyimpan seluruh state Ray OS.</p><div class="crud-actions"><button class="btn primary" id="settingsExport">Export Full Backup</button><button class="btn danger" id="settingsClear">Reset Semua Data</button></div></div><div class="card"><h2>Status Sistem</h2><div id="systemStatus"></div></div></div>
+  <div class="card section"><h2>Audit Log</h2><div class="grid g2"><div class="field"><span>Filter</span><input id="auditFilter" placeholder="CREATE, EDIT, DELETE..."></div><div class="field"><span>Jumlah log</span><input id="auditCount" disabled></div></div><div id="auditTable" style="margin-top:10px"></div></div>
+</section>
+<section class="view" id="view-history">
+  <div class="grid g2">
+    <div class="card">
+      <h2>Import data historis dari Excel</h2>
+      <p class="mini">Masukkan file .xlsx, .xls, atau .csv. Data dibaca sebagai data historis dan tidak menghapus data Ray OS yang sudah ada.</p>
+      <div class="top-actions" style="margin-top:10px">
+        <button class="btn primary" id="excelImportBtn">Import Excel / CSV</button><button class="btn" id="excelExportBtn">Export Historis</button><button class="btn danger" id="deleteHistoryBtn">Delete Historis</button>
+        <button class="btn" id="excelTemplateBtn">Download Template Excel</button>
+        <input id="excelFile" type="file" accept=".xlsx,.xls,.csv" hidden>
+      </div>
+      <div id="excelStatus" class="notice" style="margin-top:12px">Belum ada file historis yang diimpor.</div>
+    </div>
+    <div class="card">
+      <h2>Ringkasan data historis</h2>
+      <div class="grid g3" id="historyKpis"></div>
+      <div class="mini" style="margin-top:8px">Sheet yang diimpor akan disimpan di browser. Gunakan Export JSON untuk backup data Ray OS juga.</div>
+    </div>
+  </div>
+  <div class="card section">
+    <h2>Data historis</h2>
+    <div class="table-wrap"><table class="table"><thead id="historyHead"></thead><tbody id="historyBody"></tbody></table></div>
+  </div>
+</section>
+</main>
+
+<div class="modal-back" id="modalBack"><div class="modal"><div class="modal-head"><h2 id="modalTitle">Modal</h2><button class="close" id="closeModal">×</button></div><div id="modalBody" style="margin-top:10px"></div></div></div>
+
+<script>
+(function(){
+'use strict';
+const KEY='ray-os-v2';
+const DAYS=[
+ {k:'sen',n:'Sen',full:'Senin',slots:['12:00–13:00']},
+ {k:'sel',n:'Sel',full:'Selasa',slots:['15:00–21:00']},
+ {k:'rab',n:'Rab',full:'Rabu',slots:['11:00–20:00']},
+ {k:'kam',n:'Kam',full:'Kamis',slots:['12:00','16:00','19:00–21:00']},
+ {k:'jum',n:'Jum',full:'Jumat',slots:['11:00–12:00','19:00–22:00']},
+ {k:'sab',n:'Sab',full:'Sabtu',slots:['09:00–11:00','12:00–15:00','19:00–21:00']},
+ {k:'min',n:'Min',full:'Minggu',slots:['07:00–13:00','16:00–21:00']}
+];
+const PILARS=['Affiliate','Value','Personal Brand'];
+const AFFPLAT=['TikTok','Shopee','Tokopedia'];
+const stages=['Idea','Script','Shoot','Edit','Scheduled','Posted','Review'];
+const defaultState=()=>({
+ theme:'light',activeDay:0,ideas:[],scripts:[],content:[],affiliate:[],work:[],attendance:{},life:{},review:{},weeklyLog:[],goals:[],settings:{weeklyTarget:11,affiliateTarget:6,valueTarget:3,brandTarget:2},historyExcel:{sheets:[],activeSheet:'',rows:[]},deleted:[],audit:[],createdAt:new Date().toISOString()
+});
+let S=load();
+function load(){try{const x=JSON.parse(localStorage.getItem(KEY));const s=x?merge(defaultState(),x):defaultState();s.historyExcel=s.historyExcel||{sheets:[],activeSheet:'',rows:[]};s.goals=s.goals||[];s.settings=s.settings||{weeklyTarget:11,affiliateTarget:6,valueTarget:3,brandTarget:2};s.deleted=s.deleted||[];s.audit=s.audit||[];return s}catch(e){return defaultState()}}
+function merge(a,b){Object.keys(b||{}).forEach(k=>a[k]=b[k]);return a}
+function save(){localStorage.setItem(KEY,JSON.stringify(S))}
+function esc(v){return String(v??'').replace(/[&<>"]/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[m]))}
+function num(v){return Number(v)||0}
+function nowISO(){return new Date().toISOString()}
+function today(){return new Date().toISOString().slice(0,10)}
+function weekKey(d=new Date()){const x=new Date(d);const day=(x.getDay()+6)%7;x.setDate(x.getDate()-day);return x.toISOString().slice(0,10)}
+function monthKey(d=new Date()){return new Date(d).toISOString().slice(0,7)}
+function pct(a,b){return b?Math.round(a/b*100):0}
+function sum(arr,fn){return arr.reduce((s,x)=>s+num(fn(x)),0)}
+function formatIDR(n){return 'Rp '+num(n).toLocaleString('id-ID')}
+function toast(msg){const el=document.createElement('div');el.textContent=msg;el.style.cssText='position:fixed;right:14px;bottom:14px;background:var(--ink);color:var(--paper);padding:10px 12px;border-radius:9px;z-index:100;font-weight:700;font-size:.83rem';document.body.appendChild(el);setTimeout(()=>el.remove(),1600)}
+
+const tabs=[['dashboard','Dashboard'],['content','Content System'],['affiliate','Affiliate'],['work','Kerja + Kuliah'],['goals','Goals'],['analytics','Analytics'],['review','Weekly Review'],['monthly','Monthly'],['history','Excel / Historis'],['settings','Settings']];
+function renderTabs(){document.getElementById('tabs').innerHTML=tabs.map(([id,n])=>`<button class="btn tab ${document.getElementById('view-'+id).classList.contains('active')?'active':''}" data-view="${id}">${n}</button>`).join('')}
+function showView(id){document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));document.getElementById('view-'+id).classList.add('active');renderTabs()}
+
+document.addEventListener('click',e=>{
+ const v=e.target.closest('[data-view]');if(v){showView(v.dataset.view);return}
+ const nav=e.target.closest('[data-nav]');if(nav){showView(nav.dataset.nav);return}
+});
+
+document.getElementById('themeBtn').onclick=()=>{S.theme=S.theme==='dark'?'light':'dark';document.documentElement.dataset.theme=S.theme;document.getElementById('themeBtn').textContent=S.theme==='dark'?'Light mode':'Dark mode';save()};
+document.getElementById('exportBtn').onclick=()=>{const blob=new Blob([JSON.stringify(S,null,2)],{type:'application/json'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='ray-os-backup-'+today()+'.json';a.click();URL.revokeObjectURL(a.href)};
+document.getElementById('importBtn').onclick=()=>document.getElementById('importFile').click();
+document.getElementById('importFile').onchange=e=>{const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=()=>{try{S=merge(defaultState(),JSON.parse(r.result));save();renderAll();toast('Data berhasil diimport')}catch(err){toast('File JSON tidak valid')}};r.readAsText(f)};
+
+function weekMetrics(){
+ const w=weekKey();
+ const posted=S.content.filter(c=>c.status==='Posted'&&String(c.postedAt||'').slice(0,10)>=w).length;
+ const p={Affiliate:0,Value:0,'Personal Brand':0};S.content.filter(c=>c.status==='Posted'&&String(c.postedAt||'').slice(0,10)>=w).forEach(c=>p[c.pilar]=(p[c.pilar]||0)+1);
+ const aff=S.affiliate.filter(a=>String(a.date||'').slice(0,10)>=w);
+ return {posted,p,aff,views:sum(S.content.filter(c=>String(c.postedAt||'').slice(0,10)>=w),c=>c.views),clicks:sum(aff,a=>a.clicks),orders:sum(aff,a=>a.orders),gmv:sum(aff,a=>a.gmv),commission:sum(aff,a=>a.commission)}
+}
+function renderDashboard(){
+ const m=weekMetrics();
+ document.getElementById('kpis').innerHTML=[
+  ['Konten terbit',`${m.posted} / ${S.settings?.weeklyTarget||11}`],['Affiliate',`${m.p.Affiliate||0} / ${S.settings?.affiliateTarget||6}`],['Value',`${m.p.Value||0} / ${S.settings?.valueTarget||3}`],['Personal Brand',`${m.p['Personal Brand']||0} / ${S.settings?.brandTarget||2}`]
+ ].map(x=>`<div class="card kpi"><span class="l">${x[0]}</span><span class="n">${x[1]}</span></div>`).join('');
+ document.getElementById('pillarKpis').innerHTML=[['Affiliate',S.settings?.affiliateTarget||6,m.p.Affiliate||0,'affiliate'],['Value',S.settings?.valueTarget||3,m.p.Value||0,'valuec'],['Personal Brand',S.settings?.brandTarget||2,m.p['Personal Brand']||0,'brand']].map(x=>`<div><span class="pill ${x[3]}"><span class="dot"></span>${x[0]}</span><div class="value" style="margin-top:5px">${x[2]}/${x[1]}</div><div class="progress"><i style="width:${Math.min(100,pct(x[2],x[1]))}%;background:${x[3]==='affiliate'?'var(--affiliate)':x[3]==='brand'?'var(--brand)':'var(--value)'}"></i></div></div>`).join('');
+ document.getElementById('funnelKpis').innerHTML=[['Views',m.views],['Clicks',m.clicks],['Orders',m.orders],['GMV',formatIDR(m.gmv)],['Komisi',formatIDR(m.commission)],['CTR',m.views?((m.clicks/m.views)*100).toFixed(2)+'%':'0%']].map(x=>`<div><span class="label">${x[0]}</span><div class="value">${x[1]}</div></div>`).join('');
+ document.getElementById('week').innerHTML=DAYS.map((d,i)=>{const dayCont=S.content.filter(c=>c.day===d.k);const post=dayCont.filter(c=>c.status==='Posted').length;return `<div class="day-card"><div class="head"><b>${d.n}</b><span class="meta">${post} posted</span></div>${d.slots.map(s=>`<div class="slot"><strong>${s}</strong><span class="mini">Slot prime-time</span></div>`).join('')}${dayCont.slice(0,3).map(c=>`<div class="slot"><strong>${esc(c.title||'Tanpa judul')}</strong><span class="mini">${esc(c.pilar)} • ${esc(c.status)}</span></div>`).join('')}</div>`}).join('');
+ const rv=S.review[weekKey()]||{};document.getElementById('reviewPreview').innerHTML=`<div class="mini">${rv.win?esc(rv.win):'Belum ada review.'}</div>`;
+}
+
+function addIdea(data){const id=crypto.randomUUID();S.ideas.unshift({id,createdAt:nowISO(),status:'Idea',...data});audit('CREATE','idea',id,data.idea);save();renderAll();toast('Ide masuk bank')}
+document.getElementById('addIdea').onclick=()=>{const idea=document.getElementById('ideaInput').value.trim();if(!idea)return;addIdea({idea,pilar:document.getElementById('ideaPilar').value,note:document.getElementById('ideaNote').value.trim()});['ideaInput','ideaNote'].forEach(id=>document.getElementById(id).value='')};
+document.getElementById('quickSave').onclick=()=>{const a=document.getElementById('quickIdea').value.trim();const b=document.getElementById('quickAff').value.trim();if(a)addIdea({idea:a,pilar:'Value',note:'Quick add'});if(b)addIdea({idea:b,pilar:'Affiliate',note:'Quick add'});document.getElementById('quickIdea').value='';document.getElementById('quickAff').value=''};
+document.getElementById('addScript').onclick=()=>{const title=document.getElementById('scriptTitle').value.trim();if(!title)return;const id=crypto.randomUUID();S.scripts.unshift({id,title,hook:document.getElementById('scriptHook').value.trim(),body:document.getElementById('scriptBody').value.trim(),cta:document.getElementById('scriptCta').value.trim(),createdAt:nowISO()});audit('CREATE','script',id,title);save();renderAll();toast('Script tersimpan')};
+function addContentFromIdea(id){const i=S.ideas.find(x=>x.id===id);if(!i)return;S.content.unshift({id:crypto.randomUUID(),ideaId:id,title:i.idea,pilar:i.pilar,status:'Script',day:DAYS[S.activeDay].k,views:0,save:0,comment:0,profileVisit:0,postedAt:''});i.status='In production';save();renderAll()}
+
+function audit(action,type,id,label){
+  S.audit=S.audit||[];
+  S.audit.unshift({id:crypto.randomUUID(),at:nowISO(),action,type,refId:id,label});
+  S.audit=S.audit.slice(0,500);
+}
+function isDeleted(x){return !!x.deletedAt}
+function softDelete(type,id,label){
+  let arr = type==='idea'?S.ideas:type==='content'?S.content:type==='affiliate'?S.affiliate:type==='work'?S.work:null;
+  if(!arr)return;
+  const x=arr.find(v=>v.id===id);
+  if(!x)return;
+  if(!confirm('Hapus data ini? Data akan masuk Trash dan bisa di-restore.'))return;
+  x.deletedAt=nowISO();
+  S.deleted=S.deleted||[];
+  S.deleted.unshift({type,id,label,deletedAt:x.deletedAt});
+  audit('DELETE',type,id,label);
+  save();renderAll();renderTrash();toast('Data dipindahkan ke Trash');
+}
+function restoreDeleted(type,id){
+  let arr = type==='idea'?S.ideas:type==='content'?S.content:type==='affiliate'?S.affiliate:type==='work'?S.work:null;
+  if(!arr)return;
+  const x=arr.find(v=>v.id===id);
+  if(!x)return;
+  delete x.deletedAt;
+  S.deleted=(S.deleted||[]).filter(d=>!(d.type===type&&d.id===id));
+  audit('RESTORE',type,id,x.title||x.idea||x.t||x.product||'Data');
+  save();renderAll();renderTrash();toast('Data berhasil di-restore');
+}
+function openEditor(title,fields,onSave){
+ const back=document.getElementById('modalBack'),body=document.getElementById('modalBody');document.getElementById('modalTitle').textContent=title;
+ body.innerHTML=`<div class="grid g2">${fields.map(f=>`<div class="field" style="${f.full?'grid-column:1/-1':''}"><span>${esc(f.label)}</span>${f.type==='textarea'?`<textarea id="ed_${f.key}">${esc(f.value||'')}</textarea>`:`<input id="ed_${f.key}" type="${f.type||'text'}" value="${esc(f.value??'')}">`}</div>`).join('')}</div><div class="crud-actions" style="margin-top:12px"><button class="btn primary" id="modalSave">Simpan</button><button class="btn" id="modalCancel">Batal</button></div>`;
+ back.classList.add('show');const close=()=>back.classList.remove('show');document.getElementById('modalCancel').onclick=close;document.getElementById('modalSave').onclick=()=>{const v={};fields.forEach(f=>v[f.key]=document.getElementById('ed_'+f.key).value);onSave(v);close()};
+}
+function editRecord(type,id){
+ let arr=type==='idea'?S.ideas:type==='content'?S.content:type==='affiliate'?S.affiliate:type==='work'?S.work:null;if(!arr)return;const x=arr.find(v=>v.id===id);if(!x)return;
+ if(type==='idea')openEditor('Edit Ide',[{key:'idea',label:'Ide',value:x.idea,full:true},{key:'pilar',label:'Pilar',value:x.pilar},{key:'note',label:'Angle / catatan',value:x.note,type:'textarea',full:true}],v=>{Object.assign(x,v);audit('EDIT',type,id,x.idea);save();renderAll()});
+ if(type==='content')openEditor('Edit Konten',[{key:'title',label:'Judul',value:x.title,full:true},{key:'pilar',label:'Pilar',value:x.pilar},{key:'status',label:'Status',value:x.status},{key:'day',label:'Hari',value:x.day},{key:'views',label:'Views',value:x.views,type:'number'},{key:'save',label:'Save',value:x.save,type:'number'},{key:'comment',label:'Komen',value:x.comment,type:'number'},{key:'profileVisit',label:'Profile Visit',value:x.profileVisit,type:'number'}],v=>{Object.assign(x,{...v,views:num(v.views),save:num(v.save),comment:num(v.comment),profileVisit:num(v.profileVisit)});audit('EDIT',type,id,x.title);save();renderAll()});
+ if(type==='affiliate')openEditor('Edit Affiliate',[{key:'product',label:'Produk',value:x.product,full:true},{key:'platform',label:'Platform',value:x.platform},{key:'status',label:'Status',value:x.status},{key:'link',label:'Link',value:x.link,full:true},{key:'views',label:'Views',value:x.views,type:'number'},{key:'clicks',label:'Clicks',value:x.clicks,type:'number'},{key:'orders',label:'Orders',value:x.orders,type:'number'},{key:'gmv',label:'GMV',value:x.gmv,type:'number'},{key:'commission',label:'Komisi',value:x.commission,type:'number'}],v=>{Object.assign(x,{...v,views:num(v.views),clicks:num(v.clicks),orders:num(v.orders),gmv:num(v.gmv),commission:num(v.commission)});audit('EDIT',type,id,x.product);save();renderAll()});
+ if(type==='work')openEditor('Edit Tugas',[{key:'t',label:'Tugas',value:x.t,full:true}],v=>{x.t=v.t;audit('EDIT',type,id,x.t);save();renderAll()});
+}
+function specialDelete(type,key,label,snapshot){if(!confirm('Hapus data ini? Data akan masuk Trash dan bisa di-restore.'))return;S.deleted=S.deleted||[];S.deleted.unshift({type,id:String(key),label,deletedAt:nowISO(),snapshot});audit('DELETE',type,String(key),label);save();renderAll();renderTrash();toast('Data dipindahkan ke Trash')}
+function permanentDelete(d){if(!confirm('Hapus PERMANEN? Data ini tidak bisa di-restore.'))return;const arr=d.type==='idea'?S.ideas:d.type==='content'?S.content:d.type==='affiliate'?S.affiliate:d.type==='work'?S.work:d.type==='goal'?S.goals:d.type==='script'?S.scripts:null;if(arr){const i=arr.findIndex(x=>x.id===d.id);if(i>=0)arr.splice(i,1)}if(d.type==='attendance')delete S.attendance[d.id];if(d.type==='life')delete S.life[d.id];if(d.type==='review')delete S.review[d.id];if(d.type==='history')S.historyExcel={sheets:[],activeSheet:'',rows:[]};S.deleted=(S.deleted||[]).filter(x=>!(x.type===d.type&&String(x.id)===String(d.id)));audit('PERMANENT_DELETE',d.type,d.id,d.label);save();renderAll();renderTrash();toast('Data dihapus permanen')}
+function restoreSpecial(d){if(d.type==='attendance')S.attendance[d.id]=d.snapshot;else if(d.type==='life')S.life[d.id]=d.snapshot;else if(d.type==='review')S.review[d.id]=d.snapshot;else if(d.type==='history')S.historyExcel=d.snapshot;else if(d.type==='goal'){const x=S.goals.find(g=>g.id===d.id);if(x)delete x.deletedAt}else if(d.type==='script'){const x=S.scripts.find(v=>v.id===d.id);if(x)delete x.deletedAt}S.deleted=(S.deleted||[]).filter(x=>!(x.type===d.type&&String(x.id)===String(d.id)));audit('RESTORE',d.type,d.id,d.label);save();renderAll();renderTrash();toast('Data berhasil di-restore')}
+function renderTrash(){const el=document.getElementById('trashList');if(!el)return;const items=S.deleted||[];const audits=S.audit||[];el.innerHTML=`<div class="card" style="margin-bottom:10px"><div class="grid g2"><div><h3>Data terhapus (${items.length})</h3><div class="mini">Restore atau hapus permanen setelah konfirmasi.</div></div><div class="field"><span>Filter Trash</span><input id="trashFilter" placeholder="jenis / nama"></div></div><div id="trashRows" style="margin-top:8px"></div></div><div class="card"><h3>Audit Log</h3><div class="grid g2"><div class="field"><span>Filter</span><input id="trashAuditFilter"></div><div class="field"><span>Jumlah</span><input id="trashAuditCount" disabled></div></div><div id="trashAuditRows" style="margin-top:8px"></div></div>`;const draw=()=>{const q=(document.getElementById('trashFilter').value||'').toLowerCase();const shown=items.filter(d=>(d.type+' '+d.label).toLowerCase().includes(q));document.getElementById('trashRows').innerHTML=shown.length?shown.map(d=>`<div class="item-row"><div><b>${esc(d.label||d.type)}</b><small>${esc(d.type)} • ${esc(d.deletedAt||'')}</small></div><div class="crud-actions"><button class="btn small" data-restore="${esc(d.type)}" data-id="${esc(d.id)}">Restore</button><button class="btn small danger" data-permanent="${esc(d.type)}" data-id="${esc(d.id)}">Hapus Permanen</button></div></div>`).join(''):'<div class="mini">Trash kosong.</div>';const aq=(document.getElementById('trashAuditFilter').value||'').toLowerCase();const aa=audits.filter(a=>(a.action+' '+a.type+' '+a.label).toLowerCase().includes(aq)).slice(0,100);document.getElementById('trashAuditCount').value=aa.length;document.getElementById('trashAuditRows').innerHTML=aa.length?`<div class="table-wrap"><table class="table"><thead><tr><th>Waktu</th><th>Aksi</th><th>Jenis</th><th>Data</th></tr></thead><tbody>${aa.map(a=>`<tr><td>${esc(a.at)}</td><td>${esc(a.action)}</td><td>${esc(a.type)}</td><td>${esc(a.label)}</td></tr>`).join('')}</tbody></table></div>`:'<div class="mini">Belum ada log.</div>'};document.getElementById('trashFilter').oninput=draw;document.getElementById('trashAuditFilter').oninput=draw;draw()}
+function renderContent(){
+ const counts=stages.map(st=>S.content.filter(c=>!isDeleted(c)&&c.status===st).length);
+ document.getElementById('contentStats').innerHTML=`<div class="grid g2">${stages.map((st,i)=>`<div><span class="label">${st}</span><div class="value">${counts[i]}</div></div>`).join('')}</div>`;
+ const ideas=(S.ideas||[]).filter(i=>!isDeleted(i));
+ document.getElementById('ideasTable').innerHTML=`<div class="table-wrap"><table class="table"><thead><tr><th>Ide</th><th>Pilar</th><th>Status</th><th>Catatan</th><th>Aksi</th></tr></thead><tbody>${ideas.map(i=>`<tr><td>${esc(i.idea)}</td><td>${esc(i.pilar)}</td><td>${esc(i.status)}</td><td>${esc(i.note)}</td><td><div class="crud-actions">${i.status==='Idea'?`<button class="btn small" data-addidea="${i.id}">Jadikan konten</button>`:''}<button class="btn small" data-edit="idea" data-id="${i.id}">Edit</button><button class="btn small danger" data-delete="idea" data-id="${i.id}">Delete</button></div></td></tr>`).join('')||'<tr><td colspan="5">Belum ada ide.</td></tr>'}</tbody></table></div>`;
+ const scripts=(S.scripts||[]).filter(x=>!isDeleted(x));document.getElementById('scriptsList').innerHTML=scripts.length?scripts.map(x=>`<div class="item-row"><div><b>${esc(x.title)}</b><small>Hook: ${esc(x.hook||'-')}</small></div><div class="crud-actions"><button class="btn small" data-script-edit="${x.id}">Edit</button><button class="btn small danger" data-script-delete="${x.id}">Delete</button></div></div>`).join(''):'<div class="mini">Belum ada script.</div>';
+ const content=(S.content||[]).filter(c=>!isDeleted(c));
+ document.getElementById('pipeline').innerHTML=stages.map(st=>`<div class="stage"><h3>${st}</h3>${content.filter(c=>c.status===st).map(c=>`<div class="item-row"><div><b>${esc(c.title||'Tanpa judul')}</b><small>${esc(c.pilar)}${c.day?' • '+esc(c.day):''}</small></div><div class="crud-actions"><button class="btn small" data-cycle="${c.id}">→</button><button class="btn small" data-edit="content" data-id="${c.id}">Edit</button><button class="btn small danger" data-delete="content" data-id="${c.id}">Delete</button></div></div>`).join('')||'<div class="mini">Kosong</div>'}</div>`).join('');
+}
+document.addEventListener('click',e=>{
+ const a=e.target.closest('[data-addidea]');if(a){addContentFromIdea(a.dataset.addidea);return}
+ const c=e.target.closest('[data-cycle]');if(c){const x=S.content.find(z=>z.id===c.dataset.cycle);if(!x||isDeleted(x))return;const idx=stages.indexOf(x.status);x.status=stages[Math.min(stages.length-1,idx+1)];if(x.status==='Posted')x.postedAt=nowISO();save();renderAll();return}
+ const ed=e.target.closest('[data-edit]');if(ed){editRecord(ed.dataset.edit,ed.dataset.id);return}
+ const del=e.target.closest('[data-delete]');if(del){const x=(del.dataset.delete==='idea'?S.ideas:del.dataset.delete==='content'?S.content:null)?.find(v=>v.id===del.dataset.id);softDelete(del.dataset.delete,del.dataset.id,x?.title||x?.idea||'Data');return}
+ const rs=e.target.closest('[data-restore]');if(rs){const d=(S.deleted||[]).find(x=>x.type===rs.dataset.restore&&x.id===rs.dataset.id);if(d)restoreSpecial(d);else restoreDeleted(rs.dataset.restore,rs.dataset.id);return} const pd=e.target.closest('[data-permanent]');if(pd){const d=(S.deleted||[]).find(x=>x.type===pd.dataset.permanent&&x.id===pd.dataset.id);if(d)permanentDelete(d);return}
+});
+
+function ensureAffiliateSlots(){const existing=new Set(S.affiliate.filter(a=>String(a.date||'').slice(0,10)>=weekKey()).map(a=>a.slot));const slots=[];for(let i=1;i<=6;i++)if(!existing.has(i))slots.push({id:crypto.randomUUID(),date:today(),slot:i,platform:i<=2?'TikTok':i<=4?'Shopee':'Tokopedia',product:'',link:'',status:'Planned',views:0,clicks:0,orders:0,gmv:0,commission:0});if(slots.length)S.affiliate.push(...slots);}
+function renderAffiliate(){
+ ensureAffiliateSlots();save();const m=weekMetrics();
+ document.getElementById('affKpis').innerHTML=[['Clicks',m.clicks],['Orders',m.orders],['GMV',formatIDR(m.gmv)],['Komisi',formatIDR(m.commission)]].map(x=>`<div class="card kpi"><span class="l">${x[0]}</span><span class="n">${x[1]}</span></div>`).join('');
+ const rows=S.affiliate.filter(a=>!isDeleted(a)&&String(a.date||'').slice(0,10)>=weekKey()).sort((a,b)=>a.slot-b.slot);
+ document.getElementById('affRows').innerHTML=rows.map(a=>`<tr><td>${a.slot}</td><td><select data-aff="platform" data-id="${a.id}">${AFFPLAT.map(p=>`<option ${p===a.platform?'selected':''}>${p}</option>`).join('')}</select></td><td><input data-aff="product" data-id="${a.id}" value="${esc(a.product)}"></td><td><input data-aff="link" data-id="${a.id}" value="${esc(a.link)}"></td><td><select data-aff="status" data-id="${a.id}">${['Planned','Posted','Sold'].map(st=>`<option ${st===a.status?'selected':''}>${st}</option>`).join('')}</select></td><td><input type="number" data-aff="views" data-id="${a.id}" value="${a.views||0}"></td><td><input type="number" data-aff="clicks" data-id="${a.id}" value="${a.clicks||0}"></td><td><input type="number" data-aff="orders" data-id="${a.id}" value="${a.orders||0}"></td><td><input type="number" data-aff="gmv" data-id="${a.id}" value="${a.gmv||0}"></td><td><input type="number" data-aff="commission" data-id="${a.id}" value="${a.commission||0}"></td><td><div class="crud-actions"><button class="btn small" data-edit="affiliate" data-id="${a.id}">Edit</button><button class="btn small danger" data-delete="affiliate" data-id="${a.id}">Delete</button></div></td></tr>`).join('');
+}
+document.getElementById('addAff').onclick=()=>{S.affiliate.push({id:crypto.randomUUID(),date:today(),slot:7,platform:'TikTok',product:'',link:'',status:'Planned',views:0,clicks:0,orders:0,gmv:0,commission:0});audit('CREATE','affiliate',S.affiliate.at(-1).id,'Affiliate row');save();renderAll();};
+
+function renderWork(){const d=DAYS[S.activeDay],a=S.attendance[d.k]||{};document.getElementById('attendance').innerHTML=`<div class="field"><span>Status</span><select id="attStatus"><option value="">Belum diisi</option>${['Masuk kantor','WFH','Izin','Sakit','Libur'].map(s=>`<option ${a.status===s?'selected':''}>${s}</option>`).join('')}</select></div><div class="grid g2" style="margin-top:8px"><div class="field"><span>Jam masuk</span><input type="time" id="attIn" value="${esc(a.in||'')}"></div><div class="field"><span>Jam pulang</span><input type="time" id="attOut" value="${esc(a.out||'')}"></div></div><div class="field" style="margin-top:8px"><span>Catatan</span><input id="attNote" value="${esc(a.note||'')}"></div><div class="crud-actions" style="margin-top:8px"><button class="btn primary" id="saveAtt">Simpan absensi ${d.full}</button>${S.attendance[d.k]?'<button class="btn" id="editAtt">Edit</button><button class="btn danger" id="deleteAtt">Delete</button>':''}</div>`;document.getElementById('workList').innerHTML=S.work.filter(w=>!isDeleted(w)).map(w=>`<div class="check"><input type="checkbox" data-work="${w.id}" ${w.done?'checked':''}><span class="${w.done?'mini':''}">${esc(w.t)}</span><button class="btn small" data-edit="work" data-id="${w.id}">Edit</button><button class="btn small danger" data-delete="work" data-id="${w.id}">Delete</button></div>`).join('')||'<div class="mini">Belum ada tugas.</div>';const life=S.life[d.k]||{};document.getElementById('studyNote').value=life.study||'';document.getElementById('workoutMin').value=life.workout||0;document.getElementById('editLife').style.display=S.life[d.k]?'inline-block':'none';document.getElementById('deleteLife').style.display=S.life[d.k]?'inline-block':'none'}
+document.addEventListener('click',e=>{if(e.target.id==='saveAtt'){const k=DAYS[S.activeDay].k,old=S.attendance[k];S.attendance[k]={status:document.getElementById('attStatus').value,in:document.getElementById('attIn').value,out:document.getElementById('attOut').value,note:document.getElementById('attNote').value};audit(old?'EDIT':'CREATE','attendance',k,'Absensi '+DAYS[S.activeDay].full);save();renderAll();toast('Absensi disimpan')}if(e.target.id==='editAtt'){const k=DAYS[S.activeDay].k,x=S.attendance[k];openEditor('Edit Absensi',[{key:'status',label:'Status',value:x.status},{key:'in',label:'Jam masuk',value:x.in},{key:'out',label:'Jam pulang',value:x.out},{key:'note',label:'Catatan',value:x.note,full:true}],v=>{S.attendance[k]=v;audit('EDIT','attendance',k,'Absensi '+DAYS[S.activeDay].full);save();renderAll()})}if(e.target.id==='deleteAtt'){const k=DAYS[S.activeDay].k;if(S.attendance[k])specialDelete('attendance',k,'Absensi '+DAYS[S.activeDay].full,S.attendance[k])}if(e.target.id==='saveDayLife'){const k=DAYS[S.activeDay].k,old=S.life[k];S.life[k]={study:document.getElementById('studyNote').value,workout:num(document.getElementById('workoutMin').value)};audit(old?'EDIT':'CREATE','life',k,'Catatan '+DAYS[S.activeDay].full);save();renderAll()}if(e.target.id==='editLife'){const k=DAYS[S.activeDay].k,x=S.life[k];openEditor('Edit Catatan Hari',[{key:'study',label:'Catatan kuliah',value:x.study,type:'textarea',full:true},{key:'workout',label:'Workout (menit)',value:x.workout,type:'number'}],v=>{S.life[k]={study:v.study,workout:num(v.workout)};audit('EDIT','life',k,'Catatan '+DAYS[S.activeDay].full);save();renderAll()})}if(e.target.id==='deleteLife'){const k=DAYS[S.activeDay].k;if(S.life[k])specialDelete('life',k,'Catatan '+DAYS[S.activeDay].full,S.life[k])}});
+document.getElementById('addWork').onclick=()=>{const x=document.getElementById('workTask').value.trim();if(!x)return;const id=crypto.randomUUID();S.work.push({id,t:x,done:false,createdAt:nowISO()});audit('CREATE','work',id,x);document.getElementById('workTask').value='';save();renderAll()};
+document.addEventListener('change',e=>{const id=e.target.dataset.work;if(id!==undefined){const w=S.work.find(x=>x.id===id);if(w){w.done=e.target.checked;save();renderAll()}}});
+
+function renderAnalytics(){const m=weekMetrics();const contentPosted=m.posted;const totalViews=m.views;const avgViews=contentPosted?Math.round(totalViews/contentPosted):0;const savec=sum(S.content.filter(c=>String(c.postedAt||'').slice(0,10)>=weekKey()),c=>c.save);const com=sum(S.content.filter(c=>String(c.postedAt||'').slice(0,10)>=weekKey()),c=>c.comment);const pv=sum(S.content.filter(c=>String(c.postedAt||'').slice(0,10)>=weekKey()),c=>c.profileVisit);document.getElementById('analyticsKpis').innerHTML=[['Posted',contentPosted],['Views',totalViews],['Avg views/video',avgViews],['Save + komen',savec+com]].map(x=>`<div class="card kpi"><span class="l">${x[0]}</span><span class="n">${x[1].toLocaleString('id-ID')}</span></div>`).join('');document.getElementById('contentAnalytics').innerHTML=`<div class="grid g2"><div><span class="label">Profile Visit</span><div class="value">${pv}</div></div><div><span class="label">Save rate</span><div class="value">${totalViews?((savec/totalViews)*100).toFixed(2)+'%':'0%'}</div></div></div>`;document.getElementById('affAnalytics').innerHTML=`<div class="grid g2"><div><span class="label">CTR</span><div class="value">${m.views?((m.clicks/m.views)*100).toFixed(2)+'%':'0%'}</div></div><div><span class="label">Order rate / click</span><div class="value">${m.clicks?((m.orders/m.clicks)*100).toFixed(2)+'%':'0%'}</div></div><div><span class="label">GMV / order</span><div class="value">${m.orders?formatIDR(m.gmv/m.orders):formatIDR(0)}</div></div><div><span class="label">Komisi / order</span><div class="value">${m.orders?formatIDR(m.commission/m.orders):formatIDR(0)}</div></div></div>`;document.getElementById('weeklyLog').innerHTML=`<div class="mini">Minggu dimulai ${weekKey()}</div><div class="table-wrap" style="margin-top:8px"><table class="table"><thead><tr><th>Pilar</th><th>Posted</th><th>Views</th></tr></thead><tbody>${PILARS.map(p=>{const cs=S.content.filter(c=>c.pilar===p&&c.status==='Posted'&&String(c.postedAt||'').slice(0,10)>=weekKey());return `<tr><td>${p}</td><td>${cs.length}</td><td>${sum(cs,c=>c.views)}</td></tr>`}).join('')}</tbody></table></div>`}
+
+function renderReview(){const key=weekKey(),rv=S.review[key]||{};['rvWin','rvLoss','rvWhy','rvChange'].forEach((id,i)=>document.getElementById(id).value=[rv.win,rv.loss,rv.why,rv.change][i]||'');const m=weekMetrics();document.getElementById('reviewNumbers').innerHTML=[['Konten',m.posted+'/'+(S.settings?.weeklyTarget||11)],['Views',m.views],['Clicks',m.clicks],['Orders',m.orders],['GMV',formatIDR(m.gmv)],['Komisi',formatIDR(m.commission)]].map(x=>`<div style="display:flex;justify-content:space-between;border-bottom:1px solid var(--line);padding:7px 0"><span class="mini">${x[0]}</span><b>${x[1]}</b></div>`).join('');const hist=Object.entries(S.review||{}).filter(([k,v])=>v&&!v.deletedAt).sort((a,b)=>b[0].localeCompare(a[0]));document.getElementById('reviewHistory').innerHTML=hist.length?hist.map(([k,v])=>`<div class="item-row"><div><b>${esc(k)}</b><small>${esc(v.win||'Belum ada ringkasan')}</small></div><div class="crud-actions"><button class="btn small" data-review-edit="${esc(k)}">Edit</button><button class="btn small danger" data-review-delete="${esc(k)}">Delete</button></div></div>`).join(''):'<div class="mini">Belum ada weekly review tersimpan.</div>';document.getElementById('editCurrentReview').style.display=S.review[key]?'inline-block':'none';document.getElementById('deleteCurrentReview').style.display=S.review[key]?'inline-block':'none'}
+document.getElementById('saveReview').onclick=()=>{const key=weekKey(),exists=!!S.review[key];S.review[key]={win:document.getElementById('rvWin').value,loss:document.getElementById('rvLoss').value,why:document.getElementById('rvWhy').value,change:document.getElementById('rvChange').value,savedAt:nowISO()};audit(exists?'EDIT':'CREATE','review',key,'Weekly Review '+key);save();renderAll();toast('Review minggu disimpan')};
+document.getElementById('editCurrentReview').onclick=()=>{const key=weekKey(),x=S.review[key];if(!x)return;openEditor('Edit Weekly Review',[{key:'win',label:'Yang berhasil',value:x.win,type:'textarea',full:true},{key:'loss',label:'Yang gagal / macet',value:x.loss,type:'textarea',full:true},{key:'why',label:'Kenapa',value:x.why,type:'textarea',full:true},{key:'change',label:'Yang diubah minggu depan',value:x.change,type:'textarea',full:true}],v=>{S.review[key]={...x,...v,savedAt:nowISO()};audit('EDIT','review',key,'Weekly Review '+key);save();renderAll()})};
+document.getElementById('deleteCurrentReview').onclick=()=>{const key=weekKey(),x=S.review[key];if(x)specialDelete('review',key,'Weekly Review '+key,x)};
+document.addEventListener('click',e=>{const re=e.target.closest('[data-review-edit]');if(re){const key=re.dataset.reviewEdit,x=S.review[key];openEditor('Edit Weekly Review '+key,[{key:'win',label:'Yang berhasil',value:x.win,type:'textarea',full:true},{key:'loss',label:'Yang gagal / macet',value:x.loss,type:'textarea',full:true},{key:'why',label:'Kenapa',value:x.why,type:'textarea',full:true},{key:'change',label:'Yang diubah minggu depan',value:x.change,type:'textarea',full:true}],v=>{S.review[key]={...x,...v,savedAt:nowISO()};audit('EDIT','review',key,'Weekly Review '+key);save();renderAll()})}const rd=e.target.closest('[data-review-delete]');if(rd){const key=rd.dataset.reviewDelete,x=S.review[key];if(x)specialDelete('review',key,'Weekly Review '+key,x)}});
+function renderMonthly(){const rows=[];const d=new Date();for(let i=5;i>=0;i--){const x=new Date(d.getFullYear(),d.getMonth()-i,1);const mk=x.toISOString().slice(0,7);const cs=S.content.filter(c=>c.status==='Posted'&&String(c.postedAt||'').slice(0,7)===mk);const af=S.affiliate.filter(a=>String(a.date||'').slice(0,7)===mk);rows.push({mk,content:cs.length,aff:cs.filter(c=>c.pilar==='Affiliate').length,value:cs.filter(c=>c.pilar==='Value').length,pb:cs.filter(c=>c.pilar==='Personal Brand').length,views:sum(cs,c=>c.views),orders:sum(af,a=>a.orders),gmv:sum(af,a=>a.gmv),commission:sum(af,a=>a.commission)})}document.getElementById('monthlyRows').innerHTML=rows.map(r=>`<tr><td>${r.mk}</td><td>${(S.settings?.weeklyTarget||11)*4} (${S.settings?.weeklyTarget||11}/wk)</td><td>${r.content}</td><td>${r.aff}</td><td>${r.value}</td><td>${r.pb}</td><td>${r.views.toLocaleString('id-ID')}</td><td>${r.orders}</td><td>${formatIDR(r.gmv)}</td><td>${formatIDR(r.commission)}</td></tr>`).join('')}
+
+// Clicking a day card sets active day and opens work view.
+document.addEventListener('click',e=>{const card=e.target.closest('.day-card');if(card){const idx=[...document.querySelectorAll('.day-card')].indexOf(card);if(idx>=0){S.activeDay=idx;save();renderAll();showView('work')}}});
+
+
+function renderHistory(){
+  const h=S.historyExcel||{sheets:[],activeSheet:'',rows:[]};
+  const rows=h.rows||[];
+  document.getElementById('historyKpis').innerHTML=[
+    ['Sheet',h.sheets?.length||0],
+    ['Baris aktif',rows.length],
+    ['Kolom aktif',rows.length?Object.keys(rows[0]).length:0]
+  ].map(x=>`<div><span class="label">${x[0]}</span><div class="value">${x[1]}</div></div>`).join('');
+  document.getElementById('excelStatus').innerHTML=h.activeSheet
+    ? `<b>${esc(h.activeSheet)}</b> sedang ditampilkan. ${rows.length.toLocaleString('id-ID')} baris terbaca.`
+    : 'Belum ada file historis yang diimpor.';
+  if(!rows.length){
+    document.getElementById('historyHead').innerHTML='<tr><th>Belum ada data</th></tr>';
+    document.getElementById('historyBody').innerHTML='<tr><td>Import Excel/CSV untuk mulai membaca data historis.</td></tr>';
+    return;
+  }
+  const cols=Object.keys(rows[0]);
+  document.getElementById('historyHead').innerHTML='<tr>'+cols.map(c=>`<th>${esc(c)}</th>`).join('')+'</tr>';
+  document.getElementById('historyBody').innerHTML=rows.slice(0,300).map(r=>'<tr>'+cols.map(c=>`<td>${esc(r[c])}</td>`).join('')+'</tr>').join('');
+}
+function buildExcelTemplate(){
+  if(typeof XLSX==='undefined'){toast('Excel library belum termuat');return}
+  const wb=XLSX.utils.book_new();
+  const content=[
+    ['Tanggal','Pilar','Platform','Judul','Status','Views','Save','Komen','Profile Visit','Catatan'],
+    ['', 'Affiliate','TikTok','','Idea','','','','',''],
+  ];
+  const affiliate=[
+    ['Tanggal','Platform','Produk','Link','Status','Views','Clicks','Orders','GMV','Komisi','Catatan'],
+    ['', 'TikTok','','','Planned',0,0,0,0,0,'']
+  ];
+  const product=[
+    ['Tanggal riset','Produk','Kategori','Platform','Komisi min','Komisi max','Pesanan 30 hari','CTR','Ranking','Rating','Sumber','Catatan'],
+    ['', 'Contoh Produk','Fashion','TikTok Shop',0,0,0,0,'', '', '','']
+  ];
+  XLSX.utils.book_append_sheet(wb,XLSX.utils.aoa_to_sheet(content),'Content History');
+  XLSX.utils.book_append_sheet(wb,XLSX.utils.aoa_to_sheet(affiliate),'Affiliate History');
+  XLSX.utils.book_append_sheet(wb,XLSX.utils.aoa_to_sheet(product),'Product Research');
+  XLSX.writeFile(wb,'Ray_OS_Historical_Template.xlsx');
+}
+function importExcelFile(file){
+  if(!file)return;
+  if(typeof XLSX==='undefined'){toast('Excel library belum termuat');return}
+  const reader=new FileReader();
+  reader.onload=ev=>{
+    try{
+      const wb=XLSX.read(ev.target.result,{type:'array'});
+      const sheets=wb.SheetNames||[];
+      const active=wb.SheetNames[0]||'';
+      const rows=(active?XLSX.utils.sheet_to_json(wb.Sheets[active],{defval:''}):[]);
+      S.historyExcel={sheets,activeSheet:active,rows};
+      save();renderAll();showView('history');toast('Excel berhasil diimport');
+    }catch(err){toast('File Excel/CSV tidak valid')}
+  };
+  reader.readAsArrayBuffer(file);
+}
+document.getElementById('excelImportBtn').onclick=()=>document.getElementById('excelFile').click();
+document.getElementById('deleteHistoryBtn').onclick=()=>{const h=S.historyExcel;if(!(h?.rows?.length||h?.sheets?.length))return toast('Tidak ada historis untuk dihapus');specialDelete('history','imported','Imported history',h);S.historyExcel={sheets:[],activeSheet:'',rows:[]};save();renderAll();toast('Historis dipindahkan ke Trash')};
+document.getElementById('excelExportBtn').onclick=()=>{
+  const h=S.historyExcel||{rows:[]};
+  if(typeof XLSX==='undefined'){toast('Excel library belum termuat');return}
+  const wb=XLSX.utils.book_new();
+  const ws=XLSX.utils.json_to_sheet(h.rows||[]);
+  XLSX.utils.book_append_sheet(wb,ws,(h.activeSheet||'History').slice(0,31));
+  XLSX.writeFile(wb,'Ray_OS_History_Export.xlsx');
+};
+document.getElementById('excelFile').onchange=e=>importExcelFile(e.target.files[0]);
+document.getElementById('excelTemplateBtn').onclick=buildExcelTemplate;
+
+function goDay(delta){
+  S.activeDay=(S.activeDay+delta+DAYS.length)%DAYS.length;
+  save();renderAll();showView('work');
+}
+document.getElementById('prevDay').onclick=()=>goDay(-1);
+document.getElementById('nextDay').onclick=()=>goDay(1);
+
+document.getElementById('trashBtn').onclick=()=>{document.getElementById('trashModal').classList.add('show');renderTrash()};document.getElementById('closeTrash').onclick=()=>document.getElementById('trashModal').classList.remove('show');document.getElementById('closeModal').onclick=()=>document.getElementById('modalBack').classList.remove('show');document.getElementById('modalBack').addEventListener('click',e=>{if(e.target.id==='modalBack')e.currentTarget.classList.remove('show')});
+function renderGoals(){const g=S.goals||[];document.getElementById('setWeeklyTarget').value=S.settings?.weeklyTarget??11;document.getElementById('setAffiliateTarget').value=S.settings?.affiliateTarget??6;document.getElementById('setValueTarget').value=S.settings?.valueTarget??3;document.getElementById('setBrandTarget').value=S.settings?.brandTarget??2;document.getElementById('goalsList').innerHTML=g.filter(x=>!x.deletedAt).map(x=>`<div class="item-row"><div style="flex:1"><b>${esc(x.title)}</b><small>${esc(x.period)} • ${x.current||0}/${x.target||0} ${esc(x.unit||'')}</small><div class="progress" style="margin-top:6px"><i style="width:${Math.min(100,pct(num(x.current),num(x.target)))}%"></i></div></div><div class="crud-actions"><button class="btn small" data-goal-edit="${x.id}">Edit</button><button class="btn small danger" data-goal-delete="${x.id}">Delete</button></div></div>`).join('')||'<div class="mini">Belum ada goal.</div>'}
+function renderSettings(){const q=(document.getElementById('auditFilter').value||'').toLowerCase(),logs=S.audit||[],shown=logs.filter(a=>(a.action+' '+a.type+' '+a.label).toLowerCase().includes(q)).slice(0,200);document.getElementById('auditCount').value=shown.length;document.getElementById('auditTable').innerHTML=shown.length?`<div class="table-wrap"><table class="table"><thead><tr><th>Waktu</th><th>Aksi</th><th>Jenis</th><th>Data</th></tr></thead><tbody>${shown.map(a=>`<tr><td>${esc(a.at)}</td><td>${esc(a.action)}</td><td>${esc(a.type)}</td><td>${esc(a.label)}</td></tr>`).join('')}</tbody></table></div>`:'<div class="mini">Belum ada audit log.</div>';document.getElementById('systemStatus').innerHTML=`<div class="grid g2"><div><span class="label">Content</span><div class="value">${S.content.length}</div></div><div><span class="label">Affiliate</span><div class="value">${S.affiliate.length}</div></div><div><span class="label">Goals</span><div class="value">${S.goals.length}</div></div><div><span class="label">Trash</span><div class="value">${S.deleted.length}</div></div></div>`}
+S.settings=S.settings||{weeklyTarget:11,affiliateTarget:6,valueTarget:3,brandTarget:2};S.goals=S.goals||[];
+document.getElementById('addGoal').onclick=()=>{const title=document.getElementById('goalTitle').value.trim();if(!title)return;const id=crypto.randomUUID();S.goals.push({id,title,target:num(document.getElementById('goalTarget').value),current:num(document.getElementById('goalCurrent').value),unit:document.getElementById('goalUnit').value.trim(),period:document.getElementById('goalPeriod').value,createdAt:nowISO()});audit('CREATE','goal',id,title);save();renderAll();toast('Goal ditambahkan')};
+document.getElementById('saveSettings').onclick=()=>{S.settings={weeklyTarget:num(document.getElementById('setWeeklyTarget').value),affiliateTarget:num(document.getElementById('setAffiliateTarget').value),valueTarget:num(document.getElementById('setValueTarget').value),brandTarget:num(document.getElementById('setBrandTarget').value)};audit('EDIT','settings','targets','Target operasional');save();renderAll();toast('Target disimpan')};document.getElementById('resetSettings').onclick=()=>{S.settings={weeklyTarget:11,affiliateTarget:6,valueTarget:3,brandTarget:2};audit('EDIT','settings','targets','Reset target bawaan');save();renderAll();toast('Target direset')};document.getElementById('auditFilter').oninput=()=>renderSettings();document.getElementById('settingsExport').onclick=()=>document.getElementById('exportBtn').click();document.getElementById('settingsClear').onclick=()=>{if(!confirm('RESET SEMUA DATA? Export backup dulu.'))return;localStorage.removeItem(KEY);S=defaultState();save();renderAll();toast('Semua data direset')};
+document.addEventListener('click',e=>{const ge=e.target.closest('[data-goal-edit]');if(ge){const x=S.goals.find(g=>g.id===ge.dataset.goalEdit);if(x)openEditor('Edit Goal',[{key:'title',label:'Nama target',value:x.title,full:true},{key:'target',label:'Target',value:x.target,type:'number'},{key:'current',label:'Progress',value:x.current,type:'number'},{key:'unit',label:'Satuan',value:x.unit},{key:'period',label:'Periode',value:x.period}],v=>{Object.assign(x,{title:v.title,target:num(v.target),current:num(v.current),unit:v.unit,period:v.period});audit('EDIT','goal',x.id,x.title);save();renderAll()})}const gd=e.target.closest('[data-goal-delete]');if(gd){const x=S.goals.find(g=>g.id===gd.dataset.goalDelete);if(x)specialDelete('goal',x.id,x.title,x)}});
+document.addEventListener('click',e=>{const se=e.target.closest('[data-script-edit]');if(se){const x=S.scripts.find(v=>v.id===se.dataset.scriptEdit);if(x)openEditor('Edit Script',[{key:'title',label:'Judul',value:x.title,full:true},{key:'hook',label:'Hook',value:x.hook,type:'textarea',full:true},{key:'body',label:'Isi / proof',value:x.body,type:'textarea',full:true},{key:'cta',label:'CTA',value:x.cta,full:true}],v=>{Object.assign(x,v);audit('EDIT','script',x.id,x.title);save();renderAll()})}const sd=e.target.closest('[data-script-delete]');if(sd){const x=S.scripts.find(v=>v.id===sd.dataset.scriptDelete);if(x)specialDelete('script',x.id,x.title,x)}});
+function renderAll(){document.documentElement.dataset.theme=S.theme||'light';document.getElementById('themeBtn').textContent=S.theme==='dark'?'Light mode':'Dark mode';renderTabs();renderDashboard();renderContent();renderAffiliate();renderWork();renderGoals();renderAnalytics();renderReview();renderMonthly();renderHistory();renderSettings();renderTrash()}
+renderAll();
+})();
+</script>
+
+<div class="modal-back" id="trashModal">
+  <div class="modal">
+    <div class="modal-head">
+      <div><h2>Trash / Restore</h2><div class="mini">Data bisnis yang dihapus tidak langsung dimusnahkan. Karena manusia kadang baru sadar salah klik setelah klik.</div></div>
+      <button class="close" id="closeTrash">×</button>
+    </div>
+    <div id="trashList" style="margin-top:12px"></div>
+  </div>
+</div>
+</body>
+</html>
