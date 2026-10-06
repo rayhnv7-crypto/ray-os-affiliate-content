@@ -29,7 +29,7 @@ input,select,textarea{width:100%;font:inherit;color:var(--ink);background:var(--
   <div><h1>Ray OS</h1><p class="sub">Konten, affiliate, kerja, kuliah, target, review, dan historis dalam satu dashboard.</p></div>
   <div class="top-actions"><button class="btn" id="themeBtn">Dark mode</button><button class="btn" data-view="history">Excel / Historis</button><button class="btn" id="exportBtn">Export JSON</button><button class="btn" id="importBtn">Import JSON</button><button class="btn danger" id="trashBtn">Trash / Restore</button><input id="importFile" type="file" accept="application/json" hidden></div>
 </div>
-<div class="notice">CRUD FINAL: data penting punya <b>Tambah</b>, <b>Edit</b>, <b>Delete</b>, <b>Restore</b>, dan <b>Hapus Permanen</b> di Trash. Audit log tersedia. &nbsp; Target mingguan saat ini: <b>11 konten</b> = <b>6 Affiliate</b> + <b>3 Value</b> + <b>2 Personal Brand</b>. Affiliate diuji lewat <b>2 TikTok + 2 Shopee + 2 Tokopedia</b>. Ini target operasional, bukan hukuman mati kalau minggu lu lagi digilas kerja dan kuliah.</div>
+<div class="notice">CRUD FINAL: data penting punya <b>Tambah</b>, <b>Edit</b>, <b>Delete</b>, <b>Restore</b>, dan <b>Hapus Permanen</b> di Trash. Audit log tersedia. &nbsp; Baseline posting: <b>24 slot / minggu</b> sesuai jadwal posting yang disepakati. Target pilar default tetap <b>6 Affiliate</b> + <b>3 Value</b> + <b>2 Personal Brand</b> dan dapat diubah di Goals. Affiliate diuji lewat <b>2 TikTok + 2 Shopee + 2 Tokopedia</b>. Ini target operasional, bukan hukuman mati kalau minggu lu lagi digilas kerja dan kuliah.</div>
 <div class="tabs" id="tabs"></div>
 
 <section class="view active" id="view-dashboard">
@@ -38,7 +38,7 @@ input,select,textarea{width:100%;font:inherit;color:var(--ink);background:var(--
     <div class="card"><h2>Target mingguan</h2><div class="grid g3" id="pillarKpis"></div></div>
     <div class="card"><h2>Funnel affiliate</h2><div class="grid g3" id="funnelKpis"></div></div>
   </div>
-  <div class="card section"><h2>7 hari kerja + konten</h2><div class="week-grid" id="week"></div></div>
+  <div class="card section"><h2>24 slot posting / minggu</h2><div class="week-grid" id="week"></div></div>
   <div class="grid g2 section">
     <div class="card"><h2>Review mingguan</h2><div id="reviewPreview"></div><button class="btn primary" data-nav="review">Buka weekly review</button></div>
     <div class="card"><h2>Quick add</h2><div class="grid g2"><div class="field"><span>Ide baru</span><input id="quickIdea" placeholder="Tulis ide mentah..."></div><div class="field"><span>Judul affiliate</span><input id="quickAff" placeholder="Produk / angle..."></div></div><button class="btn primary" id="quickSave" style="margin-top:10px">Simpan ke Content Bank</button></div>
@@ -131,16 +131,16 @@ input,select,textarea{width:100%;font:inherit;color:var(--ink);background:var(--
 'use strict';
 const KEY='ray-os-v2';
 const DAYS=[
- {k:'sen',n:'Sen',full:'Senin',slots:['12:00–13:00']},
- {k:'sel',n:'Sel',full:'Selasa',slots:['15:00–21:00']},
- {k:'rab',n:'Rab',full:'Rabu',slots:['11:00–20:00']},
- {k:'kam',n:'Kam',full:'Kamis',slots:['12:00','16:00','19:00–21:00']},
- {k:'jum',n:'Jum',full:'Jumat',slots:['11:00–12:00','19:00–22:00']},
- {k:'sab',n:'Sab',full:'Sabtu',slots:['09:00–11:00','12:00–15:00','19:00–21:00']},
- {k:'min',n:'Min',full:'Minggu',slots:['07:00–13:00','16:00–21:00']}
+ {k:'sen',n:'Sen',full:'Senin',slots:['12:00','13:00']},
+ {k:'sel',n:'Sel',full:'Selasa',slots:['15:00','19:00','21:00']},
+ {k:'rab',n:'Rab',full:'Rabu',slots:['19:00','20:00','21:00']},
+ {k:'kam',n:'Kam',full:'Kamis',slots:['12:00','16:00','19:00','21:00']},
+ {k:'jum',n:'Jum',full:'Jumat',slots:['11:00','12:00','19:00','22:00']},
+ {k:'sab',n:'Sab',full:'Sabtu',slots:['09:00','11:00','19:00','21:00']},
+ {k:'min',n:'Min',full:'Minggu',slots:['07:00','08:00','13:00','16:00','19:00']}
 ];
 const PILARS=['Affiliate','Value','Personal Brand'];
-const AFFPLAT=['TikTok','Shopee','Tokopedia'];
+const AFFPLAT=['TikTok','Shopee','Tokopedia','Lazada'];
 const stages=['Idea','Script','Shoot','Edit','Scheduled','Posted','Review'];
 const defaultState=()=>({
  theme:'light',activeDay:0,ideas:[],scripts:[],content:[],affiliate:[],work:[],attendance:{},life:{},review:{},weeklyLog:[],goals:[],settings:{weeklyTarget:11,affiliateTarget:6,valueTarget:3,brandTarget:2},historyExcel:{sheets:[],activeSheet:'',rows:[]},deleted:[],audit:[],createdAt:new Date().toISOString()
@@ -266,7 +266,9 @@ function renderAffiliate(){
  const rows=S.affiliate.filter(a=>!isDeleted(a)&&String(a.date||'').slice(0,10)>=weekKey()).sort((a,b)=>a.slot-b.slot);
  document.getElementById('affRows').innerHTML=rows.map(a=>`<tr><td>${a.slot}</td><td><select data-aff="platform" data-id="${a.id}">${AFFPLAT.map(p=>`<option ${p===a.platform?'selected':''}>${p}</option>`).join('')}</select></td><td><input data-aff="product" data-id="${a.id}" value="${esc(a.product)}"></td><td><input data-aff="link" data-id="${a.id}" value="${esc(a.link)}"></td><td><select data-aff="status" data-id="${a.id}">${['Planned','Posted','Sold'].map(st=>`<option ${st===a.status?'selected':''}>${st}</option>`).join('')}</select></td><td><input type="number" data-aff="views" data-id="${a.id}" value="${a.views||0}"></td><td><input type="number" data-aff="clicks" data-id="${a.id}" value="${a.clicks||0}"></td><td><input type="number" data-aff="orders" data-id="${a.id}" value="${a.orders||0}"></td><td><input type="number" data-aff="gmv" data-id="${a.id}" value="${a.gmv||0}"></td><td><input type="number" data-aff="commission" data-id="${a.id}" value="${a.commission||0}"></td><td><div class="crud-actions"><button class="btn small" data-edit="affiliate" data-id="${a.id}">Edit</button><button class="btn small danger" data-delete="affiliate" data-id="${a.id}">Delete</button></div></td></tr>`).join('');
 }
-document.getElementById('addAff').onclick=()=>{S.affiliate.push({id:crypto.randomUUID(),date:today(),slot:7,platform:'TikTok',product:'',link:'',status:'Planned',views:0,clicks:0,orders:0,gmv:0,commission:0});audit('CREATE','affiliate',S.affiliate.at(-1).id,'Affiliate row');save();renderAll();};
+document.getElementById('addAff').onclick=()=>{S.affiliate.push({id:crypto.randomUUID(),date:today(),slot:Math.max(0,...S.affiliate.map(a=>num(a.slot)))+1,platform:'TikTok',product:'',link:'',status:'Planned',views:0,clicks:0,orders:0,gmv:0,commission:0});audit('CREATE','affiliate',S.affiliate.at(-1).id,'Affiliate row');save();renderAll();};
+document.addEventListener('input',e=>{const f=e.target.closest('[data-aff]');if(!f)return;const x=S.affiliate.find(a=>a.id===f.dataset.id);if(!x)return;const key=f.dataset.aff;x[key]=['views','clicks','orders','gmv','commission'].includes(key)?num(f.value):f.value;save();});
+document.addEventListener('change',e=>{const f=e.target.closest('[data-aff]');if(!f)return;const x=S.affiliate.find(a=>a.id===f.dataset.id);if(!x)return;const key=f.dataset.aff;x[key]=['views','clicks','orders','gmv','commission'].includes(key)?num(f.value):f.value;audit('EDIT','affiliate',x.id,x.product||'Affiliate row');save();renderAll();});
 
 function renderWork(){const d=DAYS[S.activeDay],a=S.attendance[d.k]||{};document.getElementById('attendance').innerHTML=`<div class="field"><span>Status</span><select id="attStatus"><option value="">Belum diisi</option>${['Masuk kantor','WFH','Izin','Sakit','Libur'].map(s=>`<option ${a.status===s?'selected':''}>${s}</option>`).join('')}</select></div><div class="grid g2" style="margin-top:8px"><div class="field"><span>Jam masuk</span><input type="time" id="attIn" value="${esc(a.in||'')}"></div><div class="field"><span>Jam pulang</span><input type="time" id="attOut" value="${esc(a.out||'')}"></div></div><div class="field" style="margin-top:8px"><span>Catatan</span><input id="attNote" value="${esc(a.note||'')}"></div><div class="crud-actions" style="margin-top:8px"><button class="btn primary" id="saveAtt">Simpan absensi ${d.full}</button>${S.attendance[d.k]?'<button class="btn" id="editAtt">Edit</button><button class="btn danger" id="deleteAtt">Delete</button>':''}</div>`;document.getElementById('workList').innerHTML=S.work.filter(w=>!isDeleted(w)).map(w=>`<div class="check"><input type="checkbox" data-work="${w.id}" ${w.done?'checked':''}><span class="${w.done?'mini':''}">${esc(w.t)}</span><button class="btn small" data-edit="work" data-id="${w.id}">Edit</button><button class="btn small danger" data-delete="work" data-id="${w.id}">Delete</button></div>`).join('')||'<div class="mini">Belum ada tugas.</div>';const life=S.life[d.k]||{};document.getElementById('studyNote').value=life.study||'';document.getElementById('workoutMin').value=life.workout||0;document.getElementById('editLife').style.display=S.life[d.k]?'inline-block':'none';document.getElementById('deleteLife').style.display=S.life[d.k]?'inline-block':'none'}
 document.addEventListener('click',e=>{if(e.target.id==='saveAtt'){const k=DAYS[S.activeDay].k,old=S.attendance[k];S.attendance[k]={status:document.getElementById('attStatus').value,in:document.getElementById('attIn').value,out:document.getElementById('attOut').value,note:document.getElementById('attNote').value};audit(old?'EDIT':'CREATE','attendance',k,'Absensi '+DAYS[S.activeDay].full);save();renderAll();toast('Absensi disimpan')}if(e.target.id==='editAtt'){const k=DAYS[S.activeDay].k,x=S.attendance[k];openEditor('Edit Absensi',[{key:'status',label:'Status',value:x.status},{key:'in',label:'Jam masuk',value:x.in},{key:'out',label:'Jam pulang',value:x.out},{key:'note',label:'Catatan',value:x.note,full:true}],v=>{S.attendance[k]=v;audit('EDIT','attendance',k,'Absensi '+DAYS[S.activeDay].full);save();renderAll()})}if(e.target.id==='deleteAtt'){const k=DAYS[S.activeDay].k;if(S.attendance[k])specialDelete('attendance',k,'Absensi '+DAYS[S.activeDay].full,S.attendance[k])}if(e.target.id==='saveDayLife'){const k=DAYS[S.activeDay].k,old=S.life[k];S.life[k]={study:document.getElementById('studyNote').value,workout:num(document.getElementById('workoutMin').value)};audit(old?'EDIT':'CREATE','life',k,'Catatan '+DAYS[S.activeDay].full);save();renderAll()}if(e.target.id==='editLife'){const k=DAYS[S.activeDay].k,x=S.life[k];openEditor('Edit Catatan Hari',[{key:'study',label:'Catatan kuliah',value:x.study,type:'textarea',full:true},{key:'workout',label:'Workout (menit)',value:x.workout,type:'number'}],v=>{S.life[k]={study:v.study,workout:num(v.workout)};audit('EDIT','life',k,'Catatan '+DAYS[S.activeDay].full);save();renderAll()})}if(e.target.id==='deleteLife'){const k=DAYS[S.activeDay].k;if(S.life[k])specialDelete('life',k,'Catatan '+DAYS[S.activeDay].full,S.life[k])}});
