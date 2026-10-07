@@ -29,7 +29,7 @@ input,select,textarea{width:100%;font:inherit;color:var(--ink);background:var(--
   <div><h1>Ray OS</h1><p class="sub">Konten, affiliate, kerja, kuliah, target, review, dan historis dalam satu dashboard.</p></div>
   <div class="top-actions"><button class="btn" id="themeBtn">Dark mode</button><button class="btn" data-view="history">Excel / Historis</button><button class="btn" id="exportBtn">Export JSON</button><button class="btn" id="importBtn">Import JSON</button><button class="btn danger" id="trashBtn">Trash / Restore</button><input id="importFile" type="file" accept="application/json" hidden></div>
 </div>
-<div class="notice">CRUD FINAL: data penting punya <b>Tambah</b>, <b>Edit</b>, <b>Delete</b>, <b>Restore</b>, dan <b>Hapus Permanen</b> di Trash. Audit log tersedia. &nbsp; Baseline posting: <b>24 slot / minggu</b> sesuai jadwal posting yang disepakati. Target pilar default tetap <b>6 Affiliate</b> + <b>3 Value</b> + <b>2 Personal Brand</b> dan dapat diubah di Goals. Affiliate diuji lewat <b>2 TikTok + 2 Shopee + 2 Tokopedia</b>. Ini target operasional, bukan hukuman mati kalau minggu lu lagi digilas kerja dan kuliah.</div>
+<div class="notice">CRUD FINAL: data penting punya <b>Tambah</b>, <b>Edit</b>, <b>Delete</b>, <b>Restore</b>, dan <b>Hapus Permanen</b> di Trash. Audit log tersedia. &nbsp; Baseline posting: <b>25 slot / minggu</b> sesuai jadwal posting yang disepakati. Target pilar default tetap <b>6 Affiliate</b> + <b>3 Value</b> + <b>2 Personal Brand</b> dan dapat diubah di Goals. Affiliate diuji lewat <b>2 TikTok + 2 Shopee + 2 Tokopedia</b>. Ini target operasional, bukan hukuman mati kalau minggu lu lagi digilas kerja dan kuliah.</div>
 <div class="tabs" id="tabs"></div>
 
 <section class="view active" id="view-dashboard">
@@ -38,7 +38,7 @@ input,select,textarea{width:100%;font:inherit;color:var(--ink);background:var(--
     <div class="card"><h2>Target mingguan</h2><div class="grid g3" id="pillarKpis"></div></div>
     <div class="card"><h2>Funnel affiliate</h2><div class="grid g3" id="funnelKpis"></div></div>
   </div>
-  <div class="card section"><h2>24 slot posting / minggu</h2><div class="week-grid" id="week"></div></div>
+  <div class="card section"><h2>25 slot posting / minggu</h2><div class="week-grid" id="week"></div></div>
   <div class="grid g2 section">
     <div class="card"><h2>Review mingguan</h2><div id="reviewPreview"></div><button class="btn primary" data-nav="review">Buka weekly review</button></div>
     <div class="card"><h2>Quick add</h2><div class="grid g2"><div class="field"><span>Ide baru</span><input id="quickIdea" placeholder="Tulis ide mentah..."></div><div class="field"><span>Judul affiliate</span><input id="quickAff" placeholder="Produk / angle..."></div></div><button class="btn primary" id="quickSave" style="margin-top:10px">Simpan ke Content Bank</button></div>
@@ -95,6 +95,66 @@ input,select,textarea{width:100%;font:inherit;color:var(--ink);background:var(--
   </div>
   <div class="card section"><h2>Daftar Goals</h2><div id="goalsList"></div></div>
 </section>
+
+<section class="view" id="view-creators">
+  <div class="grid g3">
+    <div class="card"><h2>Creator / Team</h2><p class="mini">People, role, room, target, workload. Bukan sekadar daftar nama.</p>
+      <div class="grid g2"><div class="field"><span>Nama</span><input id="crName"></div><div class="field"><span>Role</span><input id="crRole" placeholder="Editor, Host, Research..."></div>
+      <div class="field"><span>Room / Function</span><select id="crRoom"><option>Research</option><option>Script / Creative</option><option>Production</option><option>Affiliate</option><option>Analytics</option><option>Finance</option></select></div>
+      <div class="field"><span>Target / minggu</span><input id="crTarget" type="number" min="0"></div></div>
+      <button class="btn primary" id="addCreator" style="margin-top:8px">Tambah Creator</button>
+    </div>
+    <div class="card"><h2>Rooms</h2><div id="creatorRooms"></div></div>
+    <div class="card"><h2>Workload</h2><div id="creatorWorkload"></div></div>
+  </div>
+  <div class="card section"><h2>Creator Database</h2><div id="creatorTable"></div></div>
+</section>
+
+<section class="view" id="view-ads">
+  <div class="grid g4" id="adsKpis"></div>
+  <div class="card section"><h2>Campaign Ads</h2>
+    <div class="grid g3"><div class="field"><span>Campaign</span><input id="adCampaign"></div><div class="field"><span>Platform</span><select id="adPlatform"><option>TikTok Ads</option><option>Meta Ads</option><option>Shopee Ads</option><option>Tokopedia Ads</option><option>Lazada Ads</option></select></div><div class="field"><span>Product</span><input id="adProduct"></div>
+    <div class="field"><span>Budget</span><input id="adBudget" type="number" min="0"></div><div class="field"><span>Spend</span><input id="adSpend" type="number" min="0"></div><div class="field"><span>Impressions</span><input id="adImpressions" type="number" min="0"></div>
+    <div class="field"><span>Clicks</span><input id="adClicks" type="number" min="0"></div><div class="field"><span>Orders</span><input id="adOrders" type="number" min="0"></div><div class="field"><span>GMV</span><input id="adGMV" type="number" min="0"></div>
+    <div class="field"><span>Commission</span><input id="adCommission" type="number" min="0"></div><div class="field"><span>Status</span><select id="adStatus"><option>Draft</option><option>Active</option><option>Paused</option><option>Completed</option></select></div></div>
+    <button class="btn primary" id="addAd" style="margin-top:8px">Tambah Campaign</button>
+  </div>
+  <div class="card section"><h2>Campaign Performance</h2><div id="adsTable"></div></div>
+</section>
+
+<section class="view" id="view-finance">
+  <div class="grid g4" id="finKpis"></div>
+  <div class="card section"><h2>Accounting Engine</h2><div class="notice">Sumber laporan: jurnal double-entry. Alur: Journal → Buku Besar → Trial Balance → P&L / Balance Sheet / Cash Flow. Manusia akhirnya menemukan cara membuat spreadsheet menjadi agama.</div></div>
+  <div class="grid g2 section">
+    <div class="card"><h2>Chart of Accounts</h2><div id="coaTable"></div></div>
+    <div class="card"><h2>Jurnal Baru</h2>
+      <div class="grid g2"><div class="field"><span>Tanggal</span><input id="jDate" type="date"></div><div class="field"><span>Referensi</span><input id="jRef"></div>
+      <div class="field"><span>Debit</span><select id="jDebit"></select></div><div class="field"><span>Kredit</span><select id="jCredit"></select></div>
+      <div class="field"><span>Nominal</span><input id="jAmount" type="number" min="0"></div><div class="field"><span>Memo</span><input id="jMemo"></div></div>
+      <button class="btn primary" id="addJournal" style="margin-top:8px">Post Journal</button>
+    </div>
+  </div>
+  <div class="card section"><h2>Buku Besar</h2><div id="glTable"></div></div>
+  <div class="card section"><h2>Trial Balance</h2><div id="trialTable"></div></div>
+  <div class="grid g2 section"><div class="card"><h2>Profit & Loss</h2><div id="pnlTable"></div></div><div class="card"><h2>Balance Sheet</h2><div id="bsTable"></div></div></div>
+  <div class="card section"><h2>Cash Flow</h2><div id="cfTable"></div></div>
+</section>
+
+<section class="view" id="view-tax">
+  <div class="grid g4" id="taxKpis"></div>
+  <div class="card section"><h2>Tax Register</h2>
+    <div class="grid g3"><div class="field"><span>Periode</span><input id="taxPeriod" placeholder="2026-10"></div><div class="field"><span>Jenis Pajak</span><input id="taxType" placeholder="PPh / PPN / lainnya"></div><div class="field"><span>Terutang</span><input id="taxDue" type="number" min="0"></div>
+    <div class="field"><span>Dibayar</span><input id="taxPaid" type="number" min="0"></div><div class="field"><span>Deadline</span><input id="taxDeadline" type="date"></div><div class="field"><span>Status</span><select id="taxStatus"><option>Belum Dibayar</option><option>Sudah Dibayar</option><option>Dilaporkan</option></select></div></div>
+    <button class="btn primary" id="addTax" style="margin-top:8px">Tambah Pajak</button>
+  </div>
+  <div class="card section"><h2>Tax History & Reconciliation</h2><div id="taxTable"></div></div>
+</section>
+
+<section class="view" id="view-attendance">
+  <div class="card"><div class="topbar"><div><h2>Attendance Matrix</h2><p class="mini">Baris = creator, kolom = tanggal. H Hadir, A Alpa, I Izin, S Sakit.</p></div><div class="top-actions"><input id="attMonth" type="month"><button class="btn" id="addAttPerson">Tambah Person</button><button class="btn" id="attExport">Export CSV</button></div></div>
+  <div class="table-wrap"><table class="table" id="attMatrix"></table></div>
+</section>
+
 <section class="view" id="view-settings">
   <div class="grid g2"><div class="card"><h2>Backup & Data</h2><p class="mini">Backup JSON menyimpan seluruh state Ray OS.</p><div class="crud-actions"><button class="btn primary" id="settingsExport">Export Full Backup</button><button class="btn danger" id="settingsClear">Reset Semua Data</button></div></div><div class="card"><h2>Status Sistem</h2><div id="systemStatus"></div></div></div>
   <div class="card section"><h2>Audit Log</h2><div class="grid g2"><div class="field"><span>Filter</span><input id="auditFilter" placeholder="CREATE, EDIT, DELETE..."></div><div class="field"><span>Jumlah log</span><input id="auditCount" disabled></div></div><div id="auditTable" style="margin-top:10px"></div></div>
@@ -160,7 +220,7 @@ function sum(arr,fn){return arr.reduce((s,x)=>s+num(fn(x)),0)}
 function formatIDR(n){return 'Rp '+num(n).toLocaleString('id-ID')}
 function toast(msg){const el=document.createElement('div');el.textContent=msg;el.style.cssText='position:fixed;right:14px;bottom:14px;background:var(--ink);color:var(--paper);padding:10px 12px;border-radius:9px;z-index:100;font-weight:700;font-size:.83rem';document.body.appendChild(el);setTimeout(()=>el.remove(),1600)}
 
-const tabs=[['dashboard','Dashboard'],['content','Content System'],['affiliate','Affiliate'],['work','Kerja + Kuliah'],['goals','Goals'],['analytics','Analytics'],['review','Weekly Review'],['monthly','Monthly'],['history','Excel / Historis'],['settings','Settings']];
+const tabs=[['dashboard','Dashboard'],['content','Content System'],['affiliate','Affiliate'],['ads','Ads'],['creators','Creators'],['work','Kerja + Kuliah'],['attendance','Attendance'],['goals','Goals'],['analytics','Analytics'],['review','Weekly Review'],['monthly','Monthly'],['finance','Finance'],['tax','Tax'],['history','Excel / Historis'],['settings','Settings']];
 function renderTabs(){document.getElementById('tabs').innerHTML=tabs.map(([id,n])=>`<button class="btn tab ${document.getElementById('view-'+id).classList.contains('active')?'active':''}" data-view="${id}">${n}</button>`).join('')}
 function showView(id){document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));document.getElementById('view-'+id).classList.add('active');renderTabs()}
 
@@ -239,8 +299,8 @@ function editRecord(type,id){
  if(type==='work')openEditor('Edit Tugas',[{key:'t',label:'Tugas',value:x.t,full:true}],v=>{x.t=v.t;audit('EDIT',type,id,x.t);save();renderAll()});
 }
 function specialDelete(type,key,label,snapshot){if(!confirm('Hapus data ini? Data akan masuk Trash dan bisa di-restore.'))return;S.deleted=S.deleted||[];S.deleted.unshift({type,id:String(key),label,deletedAt:nowISO(),snapshot});audit('DELETE',type,String(key),label);save();renderAll();renderTrash();toast('Data dipindahkan ke Trash')}
-function permanentDelete(d){if(!confirm('Hapus PERMANEN? Data ini tidak bisa di-restore.'))return;const arr=d.type==='idea'?S.ideas:d.type==='content'?S.content:d.type==='affiliate'?S.affiliate:d.type==='work'?S.work:d.type==='goal'?S.goals:d.type==='script'?S.scripts:null;if(arr){const i=arr.findIndex(x=>x.id===d.id);if(i>=0)arr.splice(i,1)}if(d.type==='attendance')delete S.attendance[d.id];if(d.type==='life')delete S.life[d.id];if(d.type==='review')delete S.review[d.id];if(d.type==='history')S.historyExcel={sheets:[],activeSheet:'',rows:[]};S.deleted=(S.deleted||[]).filter(x=>!(x.type===d.type&&String(x.id)===String(d.id)));audit('PERMANENT_DELETE',d.type,d.id,d.label);save();renderAll();renderTrash();toast('Data dihapus permanen')}
-function restoreSpecial(d){if(d.type==='attendance')S.attendance[d.id]=d.snapshot;else if(d.type==='life')S.life[d.id]=d.snapshot;else if(d.type==='review')S.review[d.id]=d.snapshot;else if(d.type==='history')S.historyExcel=d.snapshot;else if(d.type==='goal'){const x=S.goals.find(g=>g.id===d.id);if(x)delete x.deletedAt}else if(d.type==='script'){const x=S.scripts.find(v=>v.id===d.id);if(x)delete x.deletedAt}S.deleted=(S.deleted||[]).filter(x=>!(x.type===d.type&&String(x.id)===String(d.id)));audit('RESTORE',d.type,d.id,d.label);save();renderAll();renderTrash();toast('Data berhasil di-restore')}
+function permanentDelete(d){if(!confirm('Hapus PERMANEN? Data ini tidak bisa di-restore.'))return;const arr=d.type==='idea'?S.ideas:d.type==='content'?S.content:d.type==='affiliate'?S.affiliate:d.type==='work'?S.work:d.type==='goal'?S.goals:d.type==='script'?S.scripts:d.type==='creator'?S.creators:d.type==='ad'?S.ads:d.type==='tax'?S.tax:null;if(arr){const i=arr.findIndex(x=>x.id===d.id);if(i>=0)arr.splice(i,1)}if(d.type==='attendance')delete S.attendance[d.id];if(d.type==='life')delete S.life[d.id];if(d.type==='review')delete S.review[d.id];if(d.type==='history')S.historyExcel={sheets:[],activeSheet:'',rows:[]};S.deleted=(S.deleted||[]).filter(x=>!(x.type===d.type&&String(x.id)===String(d.id)));audit('PERMANENT_DELETE',d.type,d.id,d.label);save();renderAll();renderTrash();toast('Data dihapus permanen')}
+function restoreSpecial(d){if(d.type==='attendance')S.attendance[d.id]=d.snapshot;else if(d.type==='life')S.life[d.id]=d.snapshot;else if(d.type==='review')S.review[d.id]=d.snapshot;else if(d.type==='history')S.historyExcel=d.snapshot;else if(d.type==='goal'){const x=S.goals.find(g=>g.id===d.id);if(x)delete x.deletedAt}else if(d.type==='script'){const x=S.scripts.find(v=>v.id===d.id);if(x)delete x.deletedAt}else if(['creator','ad','tax'].includes(d.type)){const arr=d.type==='creator'?S.creators:d.type==='ad'?S.ads:S.tax;const x=arr.find(v=>v.id===d.id);if(x)delete x.deletedAt}S.deleted=(S.deleted||[]).filter(x=>!(x.type===d.type&&String(x.id)===String(d.id)));audit('RESTORE',d.type,d.id,d.label);save();renderAll();renderTrash();toast('Data berhasil di-restore')}
 function renderTrash(){const el=document.getElementById('trashList');if(!el)return;const items=S.deleted||[];const audits=S.audit||[];el.innerHTML=`<div class="card" style="margin-bottom:10px"><div class="grid g2"><div><h3>Data terhapus (${items.length})</h3><div class="mini">Restore atau hapus permanen setelah konfirmasi.</div></div><div class="field"><span>Filter Trash</span><input id="trashFilter" placeholder="jenis / nama"></div></div><div id="trashRows" style="margin-top:8px"></div></div><div class="card"><h3>Audit Log</h3><div class="grid g2"><div class="field"><span>Filter</span><input id="trashAuditFilter"></div><div class="field"><span>Jumlah</span><input id="trashAuditCount" disabled></div></div><div id="trashAuditRows" style="margin-top:8px"></div></div>`;const draw=()=>{const q=(document.getElementById('trashFilter').value||'').toLowerCase();const shown=items.filter(d=>(d.type+' '+d.label).toLowerCase().includes(q));document.getElementById('trashRows').innerHTML=shown.length?shown.map(d=>`<div class="item-row"><div><b>${esc(d.label||d.type)}</b><small>${esc(d.type)} • ${esc(d.deletedAt||'')}</small></div><div class="crud-actions"><button class="btn small" data-restore="${esc(d.type)}" data-id="${esc(d.id)}">Restore</button><button class="btn small danger" data-permanent="${esc(d.type)}" data-id="${esc(d.id)}">Hapus Permanen</button></div></div>`).join(''):'<div class="mini">Trash kosong.</div>';const aq=(document.getElementById('trashAuditFilter').value||'').toLowerCase();const aa=audits.filter(a=>(a.action+' '+a.type+' '+a.label).toLowerCase().includes(aq)).slice(0,100);document.getElementById('trashAuditCount').value=aa.length;document.getElementById('trashAuditRows').innerHTML=aa.length?`<div class="table-wrap"><table class="table"><thead><tr><th>Waktu</th><th>Aksi</th><th>Jenis</th><th>Data</th></tr></thead><tbody>${aa.map(a=>`<tr><td>${esc(a.at)}</td><td>${esc(a.action)}</td><td>${esc(a.type)}</td><td>${esc(a.label)}</td></tr>`).join('')}</tbody></table></div>`:'<div class="mini">Belum ada log.</div>'};document.getElementById('trashFilter').oninput=draw;document.getElementById('trashAuditFilter').oninput=draw;draw()}
 function renderContent(){
  const counts=stages.map(st=>S.content.filter(c=>!isDeleted(c)&&c.status===st).length);
@@ -372,7 +432,72 @@ document.getElementById('addGoal').onclick=()=>{const title=document.getElementB
 document.getElementById('saveSettings').onclick=()=>{S.settings={weeklyTarget:num(document.getElementById('setWeeklyTarget').value),affiliateTarget:num(document.getElementById('setAffiliateTarget').value),valueTarget:num(document.getElementById('setValueTarget').value),brandTarget:num(document.getElementById('setBrandTarget').value)};audit('EDIT','settings','targets','Target operasional');save();renderAll();toast('Target disimpan')};document.getElementById('resetSettings').onclick=()=>{S.settings={weeklyTarget:11,affiliateTarget:6,valueTarget:3,brandTarget:2};audit('EDIT','settings','targets','Reset target bawaan');save();renderAll();toast('Target direset')};document.getElementById('auditFilter').oninput=()=>renderSettings();document.getElementById('settingsExport').onclick=()=>document.getElementById('exportBtn').click();document.getElementById('settingsClear').onclick=()=>{if(!confirm('RESET SEMUA DATA? Export backup dulu.'))return;localStorage.removeItem(KEY);S=defaultState();save();renderAll();toast('Semua data direset')};
 document.addEventListener('click',e=>{const ge=e.target.closest('[data-goal-edit]');if(ge){const x=S.goals.find(g=>g.id===ge.dataset.goalEdit);if(x)openEditor('Edit Goal',[{key:'title',label:'Nama target',value:x.title,full:true},{key:'target',label:'Target',value:x.target,type:'number'},{key:'current',label:'Progress',value:x.current,type:'number'},{key:'unit',label:'Satuan',value:x.unit},{key:'period',label:'Periode',value:x.period}],v=>{Object.assign(x,{title:v.title,target:num(v.target),current:num(v.current),unit:v.unit,period:v.period});audit('EDIT','goal',x.id,x.title);save();renderAll()})}const gd=e.target.closest('[data-goal-delete]');if(gd){const x=S.goals.find(g=>g.id===gd.dataset.goalDelete);if(x)specialDelete('goal',x.id,x.title,x)}});
 document.addEventListener('click',e=>{const se=e.target.closest('[data-script-edit]');if(se){const x=S.scripts.find(v=>v.id===se.dataset.scriptEdit);if(x)openEditor('Edit Script',[{key:'title',label:'Judul',value:x.title,full:true},{key:'hook',label:'Hook',value:x.hook,type:'textarea',full:true},{key:'body',label:'Isi / proof',value:x.body,type:'textarea',full:true},{key:'cta',label:'CTA',value:x.cta,full:true}],v=>{Object.assign(x,v);audit('EDIT','script',x.id,x.title);save();renderAll()})}const sd=e.target.closest('[data-script-delete]');if(sd){const x=S.scripts.find(v=>v.id===sd.dataset.scriptDelete);if(x)specialDelete('script',x.id,x.title,x)}});
-function renderAll(){document.documentElement.dataset.theme=S.theme||'light';document.getElementById('themeBtn').textContent=S.theme==='dark'?'Light mode':'Dark mode';renderTabs();renderDashboard();renderContent();renderAffiliate();renderWork();renderGoals();renderAnalytics();renderReview();renderMonthly();renderHistory();renderSettings();renderTrash()}
+
+S.creators=S.creators||[]; S.ads=S.ads||[]; S.tax=S.tax||[]; S.journals=S.journals||[]; S.attPeople=S.attPeople||[]; S.journals=S.journals||[]; S.attPeople=S.attPeople||[];
+S.coa=S.coa||[
+{id:'1000',name:'Kas',type:'Asset'},{id:'1100',name:'Piutang Komisi',type:'Asset'},{id:'1200',name:'Persediaan / Produk',type:'Asset'},
+{id:'2000',name:'Utang',type:'Liability'},{id:'2100',name:'Utang Pajak',type:'Liability'},{id:'3000',name:'Modal',type:'Equity'},
+{id:'4000',name:'Pendapatan Komisi',type:'Revenue'},{id:'4100',name:'Pendapatan Lain',type:'Revenue'},
+{id:'5000',name:'Beban Iklan',type:'Expense'},{id:'5100',name:'Beban Operasional',type:'Expense'},{id:'5200',name:'Beban Pajak',type:'Expense'}
+];
+
+function finTotals(){
+ const b={},c={}; S.coa.forEach(a=>b[a.id]=0);
+ S.journals.forEach(j=>{b[j.debit]=num(b[j.debit])+num(j.amount);b[j.credit]=num(b[j.credit])-num(j.amount)});
+ return b;
+}
+function accountName(id){const a=S.coa.find(x=>x.id===id);return a?a.name:id}
+function renderCreators(){
+ const rooms=['Research','Script / Creative','Production','Affiliate','Analytics','Finance'];
+ document.getElementById('creatorRooms').innerHTML=rooms.map(r=>{const n=S.creators.filter(x=>x.room===r).length;return '<div class="item-row"><b>'+esc(r)+'</b><span class="pill">'+n+' people</span></div>'}).join('');
+ document.getElementById('creatorWorkload').innerHTML=S.creators.length?S.creators.map(x=>'<div style="margin:7px 0"><div style="display:flex;justify-content:space-between"><span>'+esc(x.name)+'</span><b>'+num(x.output||0)+' / '+num(x.target||0)+'</b></div><div class="progress"><i style="width:'+Math.min(100,pct(num(x.output),num(x.target)))+'%"></i></div></div>').join(''):'<div class="mini">Belum ada creator.</div>';
+ document.getElementById('creatorTable').innerHTML=S.creators.length?'<div class="table-wrap"><table class="table"><thead><tr><th>Nama</th><th>Role</th><th>Room</th><th>Target/wk</th><th>Output</th><th>Status</th><th>Aksi</th></tr></thead><tbody>'+S.creators.map(x=>'<tr><td>'+esc(x.name)+'</td><td>'+esc(x.role)+'</td><td>'+esc(x.room)+'</td><td>'+x.target+'</td><td>'+x.output+'</td><td>'+esc(x.status||'Active')+'</td><td><button class="btn small" data-cr-edit="'+x.id+'">Edit</button> <button class="btn small danger" data-cr-del="'+x.id+'">Delete</button></td></tr>').join('')+'</tbody></table></div>':'<div class="mini">Belum ada creator.</div>';
+}
+document.getElementById('addCreator').onclick=()=>{const name=document.getElementById('crName').value.trim();if(!name)return;const id=crypto.randomUUID();S.creators.push({id,name,role:document.getElementById('crRole').value,room:document.getElementById('crRoom').value,target:num(document.getElementById('crTarget').value),output:0,status:'Active'});audit('CREATE','creator',id,name);save();renderAll()};
+document.addEventListener('click',e=>{const a=e.target.closest('[data-cr-del]');if(a){const x=S.creators.find(v=>v.id===a.dataset.crDel);if(x)specialDelete('creator',x.id,x.name,x)}const b=e.target.closest('[data-cr-edit]');if(b){const x=S.creators.find(v=>v.id===b.dataset.crEdit);if(x)openEditor('Edit Creator',[{key:'name',label:'Nama',value:x.name},{key:'role',label:'Role',value:x.role},{key:'room',label:'Room',value:x.room},{key:'target',label:'Target/wk',value:x.target,type:'number'},{key:'output',label:'Output',value:x.output,type:'number'},{key:'status',label:'Status',value:x.status}],v=>{Object.assign(x,{...v,target:num(v.target),output:num(v.output)});audit('EDIT','creator',x.id,x.name);save();renderAll()})}});
+
+function renderAds(){
+ const spend=sum(S.ads,x=>x.spend),gmv=sum(S.ads,x=>x.gmv),orders=sum(S.ads,x=>x.orders),commission=sum(S.ads,x=>x.commission);
+ document.getElementById('adsKpis').innerHTML=[['Spend',formatIDR(spend)],['GMV',formatIDR(gmv)],['Orders',orders],['ROAS',spend?(gmv/spend).toFixed(2)+'x':'0x']].map(x=>'<div class="card kpi"><span class="l">'+x[0]+'</span><span class="n">'+x[1]+'</span></div>').join('');
+ document.getElementById('adsTable').innerHTML=S.ads.length?'<div class="table-wrap"><table class="table"><thead><tr><th>Campaign</th><th>Platform</th><th>Product</th><th>Budget</th><th>Spend</th><th>Clicks</th><th>Orders</th><th>GMV</th><th>Commission</th><th>CTR</th><th>ROAS</th><th>Aksi</th></tr></thead><tbody>'+S.ads.map(x=>'<tr><td>'+esc(x.campaign)+'</td><td>'+esc(x.platform)+'</td><td>'+esc(x.product)+'</td><td>'+formatIDR(x.budget)+'</td><td>'+formatIDR(x.spend)+'</td><td>'+x.clicks+'</td><td>'+x.orders+'</td><td>'+formatIDR(x.gmv)+'</td><td>'+formatIDR(x.commission)+'</td><td>'+((num(x.impressions)?x.clicks/x.impressions*100:0).toFixed(2))+'%</td><td>'+(x.spend?(x.gmv/x.spend).toFixed(2):0)+'x</td><td><button class="btn small" data-ad-edit="'+x.id+'">Edit</button> <button class="btn small danger" data-ad-del="'+x.id+'">Delete</button></td></tr>').join('')+'</tbody></table></div>':'<div class="mini">Belum ada campaign.</div>';
+}
+document.getElementById('addAd').onclick=()=>{const campaign=document.getElementById('adCampaign').value.trim();if(!campaign)return;const id=crypto.randomUUID();S.ads.push({id,campaign,platform:document.getElementById('adPlatform').value,product:document.getElementById('adProduct').value,budget:num(document.getElementById('adBudget').value),spend:num(document.getElementById('adSpend').value),impressions:num(document.getElementById('adImpressions').value),clicks:num(document.getElementById('adClicks').value),orders:num(document.getElementById('adOrders').value),gmv:num(document.getElementById('adGMV').value),commission:num(document.getElementById('adCommission').value),status:document.getElementById('adStatus').value});audit('CREATE','ad',id,campaign);save();renderAll()};
+document.addEventListener('click',e=>{const d=e.target.closest('[data-ad-del]');if(d){const x=S.ads.find(v=>v.id===d.dataset.adDel);if(x)specialDelete('ad',x.id,x.campaign,x)}const ed=e.target.closest('[data-ad-edit]');if(ed){const x=S.ads.find(v=>v.id===ed.dataset.adEdit);if(x)openEditor('Edit Campaign',[{key:'campaign',label:'Campaign',value:x.campaign},{key:'platform',label:'Platform',value:x.platform},{key:'product',label:'Product',value:x.product},{key:'budget',label:'Budget',value:x.budget,type:'number'},{key:'spend',label:'Spend',value:x.spend,type:'number'},{key:'impressions',label:'Impressions',value:x.impressions,type:'number'},{key:'clicks',label:'Clicks',value:x.clicks,type:'number'},{key:'orders',label:'Orders',value:x.orders,type:'number'},{key:'gmv',label:'GMV',value:x.gmv,type:'number'},{key:'commission',label:'Commission',value:x.commission,type:'number'},{key:'status',label:'Status',value:x.status}],v=>{Object.assign(x,{...v,budget:num(v.budget),spend:num(v.spend),impressions:num(v.impressions),clicks:num(v.clicks),orders:num(v.orders),gmv:num(v.gmv),commission:num(v.commission)});audit('EDIT','ad',x.id,x.campaign);save();renderAll()})}});
+
+function renderFinance(){
+ const t=finTotals(), revenue=S.coa.filter(a=>a.type==='Revenue').reduce((s,a)=>s+Math.max(0,-t[a.id]),0), expense=S.coa.filter(a=>a.type==='Expense').reduce((s,a)=>s+Math.max(0,t[a.id]),0), assets=S.coa.filter(a=>a.type==='Asset').reduce((s,a)=>s+t[a.id],0), liabilities=S.coa.filter(a=>a.type==='Liability').reduce((s,a)=>s-t[a.id],0), equity=S.coa.filter(a=>a.type==='Equity').reduce((s,a)=>s-t[a.id],0);
+ const profit=revenue-expense;
+ document.getElementById('finKpis').innerHTML=[['Pendapatan',formatIDR(revenue)],['Beban',formatIDR(expense)],['Net Profit',formatIDR(profit)],['Balance Check',assets-(liabilities+equity+profit)===0?'BALANCED':'CHECK']].map(x=>'<div class="card kpi"><span class="l">'+x[0]+'</span><span class="n">'+x[1]+'</span></div>').join('');
+ document.getElementById('coaTable').innerHTML='<div class="table-wrap"><table class="table"><thead><tr><th>Code</th><th>Account</th><th>Type</th></tr></thead><tbody>'+S.coa.map(a=>'<tr><td>'+a.id+'</td><td>'+esc(a.name)+'</td><td>'+a.type+'</td></tr>').join('')+'</tbody></table></div>';
+ const opts=S.coa.map(a=>'<option value="'+a.id+'">'+a.id+' · '+esc(a.name)+'</option>').join('');document.getElementById('jDebit').innerHTML=opts;document.getElementById('jCredit').innerHTML=opts;
+ const gl=S.journals.flatMap(j=>[{date:j.date,ref:j.ref,account:j.debit,memo:j.memo,debit:j.amount,credit:0},{date:j.date,ref:j.ref,account:j.credit,memo:j.memo,debit:0,credit:j.amount}]).sort((a,b)=>a.date.localeCompare(b.date));
+ document.getElementById('glTable').innerHTML=gl.length?'<div class="table-wrap"><table class="table"><thead><tr><th>Date</th><th>Ref</th><th>Account</th><th>Memo</th><th>Debit</th><th>Credit</th></tr></thead><tbody>'+gl.map(x=>'<tr><td>'+x.date+'</td><td>'+esc(x.ref)+'</td><td>'+esc(accountName(x.account))+'</td><td>'+esc(x.memo)+'</td><td>'+formatIDR(x.debit)+'</td><td>'+formatIDR(x.credit)+'</td></tr>').join('')+'</tbody></table></div>':'<div class="mini">Belum ada jurnal.</div>';
+ document.getElementById('trialTable').innerHTML='<div class="table-wrap"><table class="table"><thead><tr><th>Account</th><th>Debit</th><th>Credit</th></tr></thead><tbody>'+S.coa.map(a=>'<tr><td>'+esc(a.id+' · '+a.name)+'</td><td>'+formatIDR(Math.max(0,t[a.id]))+'</td><td>'+formatIDR(Math.max(0,-t[a.id]))+'</td></tr>').join('')+'<tr><th>Total</th><th>'+formatIDR(S.coa.reduce((s,a)=>s+Math.max(0,t[a.id]),0))+'</th><th>'+formatIDR(S.coa.reduce((s,a)=>s+Math.max(0,-t[a.id]),0))+'</th></tr></tbody></table></div>';
+ document.getElementById('pnlTable').innerHTML='<div class="table-wrap"><table class="table"><tbody>'+S.coa.filter(a=>['Revenue','Expense'].includes(a.type)).map(a=>'<tr><td>'+a.name+'</td><td>'+formatIDR(a.type==='Revenue'?Math.max(0,-t[a.id]):Math.max(0,t[a.id]))+'</td></tr>').join('')+'<tr><th>Net Profit</th><th>'+formatIDR(profit)+'</th></tr></tbody></table></div>';
+ document.getElementById('bsTable').innerHTML='<div class="table-wrap"><table class="table"><tbody><tr><td>Total Assets</td><td>'+formatIDR(assets)+'</td></tr><tr><td>Total Liabilities</td><td>'+formatIDR(liabilities)+'</td></tr><tr><td>Equity + Current Profit</td><td>'+formatIDR(equity+profit)+'</td></tr></tbody></table></div>';
+ const cash=t['1000']||0;document.getElementById('cfTable').innerHTML='<div class="table-wrap"><table class="table"><tbody><tr><td>Net Cash Change</td><td>'+formatIDR(cash)+'</td></tr><tr><td>Method</td><td>Direct journal cash movement</td></tr></tbody></table></div>';
+}
+document.getElementById('addJournal').onclick=()=>{const amount=num(document.getElementById('jAmount').value),debit=document.getElementById('jDebit').value,credit=document.getElementById('jCredit').value;if(!amount||debit===credit)return toast('Journal harus punya nominal dan akun debit/kredit berbeda');const id=crypto.randomUUID();S.journals.push({id,date:document.getElementById('jDate').value||today(),ref:document.getElementById('jRef').value||id.slice(0,8),debit,credit,amount,memo:document.getElementById('jMemo').value});audit('CREATE','journal',id,'Journal '+id.slice(0,8));save();renderAll();toast('Journal diposting')};
+
+function renderTax(){
+ const due=sum(S.tax,x=>x.due),paid=sum(S.tax,x=>x.paid);document.getElementById('taxKpis').innerHTML=[['Terutang',formatIDR(due)],['Dibayar',formatIDR(paid)],['Sisa',formatIDR(Math.max(0,due-paid))],['Records',S.tax.length]].map(x=>'<div class="card kpi"><span class="l">'+x[0]+'</span><span class="n">'+x[1]+'</span></div>').join('');
+ document.getElementById('taxTable').innerHTML=S.tax.length?'<div class="table-wrap"><table class="table"><thead><tr><th>Periode</th><th>Jenis</th><th>Terutang</th><th>Dibayar</th><th>Deadline</th><th>Status</th><th>Aksi</th></tr></thead><tbody>'+S.tax.map(x=>'<tr><td>'+esc(x.period)+'</td><td>'+esc(x.type)+'</td><td>'+formatIDR(x.due)+'</td><td>'+formatIDR(x.paid)+'</td><td>'+esc(x.deadline)+'</td><td>'+esc(x.status)+'</td><td><button class="btn small" data-tax-edit="'+x.id+'">Edit</button> <button class="btn small danger" data-tax-del="'+x.id+'">Delete</button></td></tr>').join('')+'</tbody></table></div>':'<div class="mini">Belum ada tax record.</div>';
+}
+document.getElementById('addTax').onclick=()=>{const id=crypto.randomUUID();S.tax.push({id,period:document.getElementById('taxPeriod').value,type:document.getElementById('taxType').value,due:num(document.getElementById('taxDue').value),paid:num(document.getElementById('taxPaid').value),deadline:document.getElementById('taxDeadline').value,status:document.getElementById('taxStatus').value});audit('CREATE','tax',id,'Tax '+document.getElementById('taxPeriod').value);save();renderAll()};
+document.addEventListener('click',e=>{const d=e.target.closest('[data-tax-del]');if(d){const x=S.tax.find(v=>v.id===d.dataset.taxDel);if(x)specialDelete('tax',x.id,x.period+' '+x.type,x)}const ed=e.target.closest('[data-tax-edit]');if(ed){const x=S.tax.find(v=>v.id===ed.dataset.taxEdit);if(x)openEditor('Edit Tax',[{key:'period',label:'Periode',value:x.period},{key:'type',label:'Jenis',value:x.type},{key:'due',label:'Terutang',value:x.due,type:'number'},{key:'paid',label:'Dibayar',value:x.paid,type:'number'},{key:'deadline',label:'Deadline',value:x.deadline},{key:'status',label:'Status',value:x.status}],v=>{Object.assign(x,{...v,due:num(v.due),paid:num(v.paid)});audit('EDIT','tax',x.id,x.period);save();renderAll()})}});
+
+function renderAttendanceMatrix(){
+ const ym=document.getElementById('attMonth').value||monthKey();document.getElementById('attMonth').value=ym;const [y,m]=ym.split('-').map(Number),days=new Date(y,m,0).getDate();let h='<thead><tr><th>Person</th>';for(let d=1;d<=days;d++)h+='<th>'+d+'</th>';h+='<th>H</th><th>A</th><th>I</th><th>S</th></tr></thead><tbody>';
+ S.attPeople.forEach(p=>{let counts={H:0,A:0,I:0,S:0};h+='<tr><td><b>'+esc(p.name)+'</b></td>';for(let d=1;d<=days;d++){const k=ym+'-'+String(d).padStart(2,'0'),v=(p.days||{})[k]||'';if(v)counts[v]=(counts[v]||0)+1;h+='<td><select data-att-person="'+p.id+'" data-att-date="'+k+'" style="min-width:52px;padding:4px"><option value="">-</option><option '+(v==='H'?'selected':'')+'>H</option><option '+(v==='A'?'selected':'')+'>A</option><option '+(v==='I'?'selected':'')+'>I</option><option '+(v==='S'?'selected':'')+'>S</option></select></td>'}h+='<td>'+counts.H+'</td><td>'+counts.A+'</td><td>'+counts.I+'</td><td>'+counts.S+'</td></tr>'});h+='</tbody>';document.getElementById('attMatrix').innerHTML=h;
+}
+document.getElementById('attMonth').value=monthKey();document.getElementById('attMonth').onchange=renderAttendanceMatrix;
+document.getElementById('addAttPerson').onclick=()=>{const name=prompt('Nama person/creator:');if(!name)return;const id=crypto.randomUUID();S.attPeople.push({id,name,days:{}});audit('CREATE','attendance_person',id,name);save();renderAll()};
+document.addEventListener('change',e=>{if(e.target.dataset.attPerson){const p=S.attPeople.find(x=>x.id===e.target.dataset.attPerson);if(p){p.days=p.days||{};p.days[e.target.dataset.attDate]=e.target.value;save();renderAttendanceMatrix()}}});
+document.getElementById('attExport').onclick=()=>{let csv='Person,Date,Status\n';S.attPeople.forEach(p=>Object.entries(p.days||{}).forEach(([d,v])=>csv+=JSON.stringify(p.name)+','+d+','+v+'\n'));const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([csv],{type:'text/csv'}));a.download='Ray_OS_Attendance.csv';a.click()};
+
+function renderAllFinance(){renderCreators();renderAds();renderFinance();renderTax();renderAttendanceMatrix()}
+
+function renderAll(){document.documentElement.dataset.theme=S.theme||'light';document.getElementById('themeBtn').textContent=S.theme==='dark'?'Light mode':'Dark mode';renderTabs();renderDashboard();renderContent();renderAffiliate();renderWork();renderGoals();renderAnalytics();renderReview();renderMonthly();renderHistory();renderSettings();renderTrash();renderAllFinance()}
 renderAll();
 })();
 </script>
